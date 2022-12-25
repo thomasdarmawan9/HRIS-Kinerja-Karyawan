@@ -67,15 +67,15 @@
                         "searchable": false,
                                 "orderable":false,
                                 "render": function (data, type, row) {
-                        
-                                if (row.nilai_akhir === 250) {
-                                    return 'A';
-                                
-                                }else {
-                        
-                                return 'C';
-                            
-                                }
+                                    if(row.nilai_akhir <= 227){
+                                        return 'Kurang (D)';
+                                    }else if(row.nilai_akhir <= 297 && row.nilai_akhir  >= 228){
+                                        return 'Cukup (C)';
+                                    }else if(row.nilai_akhir  <= 304 && row.nilai_akhir  >= 298){
+                                        return 'Baik (B)';
+                                    }else if(row.nilai_akhir  <= 380 && row.nilai_akhir  >= 305){
+                                        return 'Baik Sekali (BS)';
+                                    }
                         }
                     },
                     // {data: 'action', name: 'action'}

@@ -391,10 +391,10 @@
                                 <p>0 - 227 : Kurang (D)</p>
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-primary btn-lg w-100" disabled>Nilai Akhir : 297</button>
+                                <button class="btn btn-primary btn-lg w-100" id="na-close" disabled></button>
                                 <br>
                                 <br>
-                                <button class="btn btn-primary btn-lg w-100" disabled>Nilai Huruf : C</button>
+                                <button class="btn btn-primary btn-lg w-100" id="nc-close" disabled></button>
                             </div>
                             <div class="col-4 text-center">
                                 Status Dokumen :
@@ -615,6 +615,17 @@
                     // console.log(result);
                     if(result['SK'] == "close" && result['SD'] == "close" && result['SA'] == "close"){
                         $("#nav-nilai-akhir").removeClass('disabled');
+                        $('#na-close').text(result['nilaiAkhir']);
+
+                        if($('#na-close').text() <= 227){
+                            $('#nc-close').text("Kurang (D)");
+                        }else if($('#na-close').text() <= 297 && $('#na-close').text() >= 228){
+                            $('#nc-close').text("Cukup (C)");
+                        }else if($('#na-close').text() <= 304 && $('#na-close').text() >= 298){
+                            $('#nc-close').text("Baik (B)");
+                        }else if($('#na-close').text() <= 380 && $('#na-close').text() >= 305){
+                            $('#nc-close').text("Baik Sekali (BS)");
+                        }
                     }else{
                         $("#nav-nilai-akhir").addClass('disabled');
                     }

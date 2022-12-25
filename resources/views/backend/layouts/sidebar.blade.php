@@ -71,7 +71,7 @@
                             </a>
                         </li>
                         <li class="treeview">
-                            <a href="{{ URL :: to('/admin/LaporanPKKPribadi') }}">
+                            <a href="{{ URL :: to('/admin/laporanPKKPribadi') }}">
                                 <i class="metismenu-icon"></i><span> Laporan PKK Pribadi</span>
                             </a>
                         </li>

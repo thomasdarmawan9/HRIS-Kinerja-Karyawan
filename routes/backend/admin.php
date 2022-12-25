@@ -23,6 +23,8 @@ Route::delete('/deleteFaktor/{id}', 'KinerjaController@deleteFaktor');
 /* ===== Laporan PKK End =========== */
 Route::resource('laporanPKK', 'LaporanpkkController');
 Route::get('/allLaporanPKK', 'LaporanpkkController@getAll')->name('allLaporanPKK');
+Route::get('/LaporanPKK', 'LaporanpkkController@getAllLaporanPribadi')->name('LaporanPKK');
+Route::get('/laporanPKKPribadi', 'LaporanpkkController@indexLaporanPribadi');
 
 /* ===== Access Management Start =========== */
 Route::resource('users', 'UserController');

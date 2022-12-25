@@ -26,6 +26,12 @@ class LaporanpkkController extends Controller
         return view('backend.admin.laporanpkk.index');
     }
 
+    public function indexLaporanPribadi()
+    {
+        
+        return view('backend.admin.laporanpkk.index_pribadi');
+    }
+
     public function getAll(Request $request)
     {
        
@@ -34,6 +40,35 @@ class LaporanpkkController extends Controller
             $LaporanpkkAtasanLangsung = 
             DB::table('status_nilai_karyawan')->select('status_nilai_karyawan.id as id','status_nilai_karyawan.form_id as pkk_number','status_nilai_karyawan.nilai_akhir as nilai_akhir',
             'nilai_karyawan.tahun as tahun','nilai_karyawan.periode as periode','nilai_karyawan.user_id_ternilai as user_id','admins.name as nama_karyawan')->where('nilai_karyawan.user_id_penilai',Auth::user()->id)
+            ->join('nilai_karyawan', 'nilai_karyawan.form_id', '=', 'status_nilai_karyawan.form_id')
+            ->join('admins','admins.id','=','nilai_karyawan.user_id_ternilai')->get();
+
+            $laporanpkkAL = $LaporanpkkAtasanLangsung->unique();
+            
+            return Datatables::of($laporanpkkAL)
+                ->addColumn('action', function ($laporanpkkAL) {
+                    $html = '<div class="btn-group">';
+                        $html .= '<a data-toggle="tooltip" id="' . $laporanpkkAL->id . '" class="btn btn-xs btn-primary mr-1 edit text-white" title="Edit"><i class="fa fa-edit"></i> </a>';
+                        $html .= '<a data-toggle="tooltip" id="' . $laporanpkkAL->id . '" class="btn btn-xs btn-danger mr-1 delete text-white" title="Delete"><i class="fa fa-trash"></i> </a>';
+                        $html .= '</div>';
+                        return $html;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        } else {
+            return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);
+        }
+    }
+
+    public function getAllLaporanPribadi(Request $request)
+    {
+       
+        // dd($LaporanpkkAtasanLangsung->unique());
+        if ($request->ajax()) {
+            $LaporanpkkAtasanLangsung = 
+            DB::table('status_nilai_karyawan')->select('status_nilai_karyawan.id as id','status_nilai_karyawan.form_id as pkk_number','status_nilai_karyawan.nilai_akhir as nilai_akhir',
+            'nilai_karyawan.tahun as tahun','nilai_karyawan.periode as periode','nilai_karyawan.user_id_ternilai as user_id','admins.name as nama_karyawan')->where('nilai_karyawan.user_id_ternilai',Auth::user()->id)
             ->join('nilai_karyawan', 'nilai_karyawan.form_id', '=', 'status_nilai_karyawan.form_id')
             ->join('admins','admins.id','=','nilai_karyawan.user_id_ternilai')->get();
 

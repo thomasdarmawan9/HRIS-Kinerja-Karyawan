@@ -51,6 +51,7 @@
         }
     </style>
     <script>
+        // API get laporan pkk
         $(function () {
             table = $('#manage_all').DataTable({
                 processing: true,
@@ -76,7 +77,8 @@
                                     }else if(row.nilai_akhir  <= 380 && row.nilai_akhir  >= 305){
                                         return 'Baik Sekali (BS)';
                                     }
-                        }
+                        } 
+
                     },
                     // {data: 'action', name: 'action'}
                 ],

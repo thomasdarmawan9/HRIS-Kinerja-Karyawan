@@ -29,6 +29,9 @@ class KinerjaController extends Controller
 
    public function index(Request $request)
    {
+
+      // $checkStatus = Status::Where("form_id", "pkk001")->first();
+      
       //USERS DATA FOR FILTER
       $namaUser = Auth::user()->name;
       $NIP = Auth::user()->NIP;
@@ -343,8 +346,15 @@ class KinerjaController extends Controller
          }
          
             $checkStatus = Status::Where("form_id", $request->input('pkk_number'))->first();
-            if($checkStatus->count() != 0){
+            if($checkStatus == null){
+               $checkCount = 0;
+            }else{
+               $checkCount = 1;
+            }
+
+            if($checkCount != 0){
                $Status_record = $checkStatus;
+               $Status_record->nilai_akhir = $request->input('nilaiAkhir');
                if($request->input('status_kk') != ""){
                   $Status_record->status_kemampuan_kerja =$request->input('status_kk');
                }else if($request->input('status_disiplin') != ""){
@@ -355,11 +365,12 @@ class KinerjaController extends Controller
       
                $Status_record->save();
 
-               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $checkStatus->count() , 'cks' => "update" ]);
+               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $checkStatus , 'cks' => "update" ]);
             }else{
                $Status_record = new Status;
                $Status_record->user_id_ternilai = $request->input('user_id_ternilai');
                $Status_record->form_id =$request->input('pkk_number');
+               $Status_record->nilai_akhir =$request->input('nilaiAkhir');
                if($request->input('status_kk') != ""){
                   $Status_record->status_kemampuan_kerja =$request->input('status_kk');
                }else if($request->input('status_disiplin') != ""){
@@ -367,10 +378,10 @@ class KinerjaController extends Controller
                }else if($request->input('status_attitude') != ""){
                   $Status_record->status_attitude =$request->input('status_attitude');
                }
-      
+               
                $Status_record->save();
 
-               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $checkStatus->count() ,'cks' => "insert" ]);
+               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $Status_record ,'cks' => "insert" ]);
             }
          
 
@@ -391,7 +402,8 @@ class KinerjaController extends Controller
       } else {
      
      
-         $status_dokumen_user = DB::select("SELECT status_nilai_karyawan.form_id, status_kemampuan_kerja as sk, status_disiplin as sd, status_attitude as sa FROM status_nilai_karyawan 
+         $status_dokumen_user = DB::select("SELECT status_nilai_karyawan.form_id, nilai_akhir,
+         status_kemampuan_kerja as sk, status_disiplin as sd, status_attitude as sa FROM status_nilai_karyawan 
          JOIN nilai_karyawan ON nilai_karyawan.form_id = status_nilai_karyawan.form_id
          WHERE status_nilai_karyawan.user_id_ternilai = $userid
          AND nilai_karyawan.periode = '$periode'");
@@ -405,7 +417,7 @@ class KinerjaController extends Controller
         }else{
             // $status_form = DB::select("SELECT status_kemampuan_kerja, status_disiplin, status_attitude FROM status_nilai_karyawan");
            return response()->json(['type' => 'success', 'message' => "Successfully Created", 'pkk_number' => $status_dokumen_user[0]->form_id,
-           'SK' => $status_dokumen_user[0]->sk, 'SD' => $status_dokumen_user[0]->sd,'SA' => $status_dokumen_user[0]->sa]);
+           'SK' => $status_dokumen_user[0]->sk, 'SD' => $status_dokumen_user[0]->sd,'SA' => $status_dokumen_user[0]->sa, 'nilaiAkhir' => $status_dokumen_user[0]->nilai_akhir]);
         }
      
      }

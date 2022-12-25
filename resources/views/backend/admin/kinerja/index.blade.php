@@ -180,19 +180,17 @@
                             </div>
                         </div>
 
-
-
                         <div class="form-group col-3">
                             <button type="button" class="form-control btn btn-primary w-100" id="check">Check</button>
                         </div>
-
-
 
                     </div>
 
                 </form>
                 <hr>
                 <div class="row">
+
+                <input type="text" class="form-control" id="nilaiAkhir" name="nilaiAkhir" style="font-size:12px" hidden disabled>
                     <div class="col-12">
                         <h5>Status Dokumen :</h5>
                     </div>
@@ -649,6 +647,9 @@
                     
                     $('#infostatus').show();
                     console.log(result);
+
+                    $('#nilaiAkhir').val(result['nilaiAkhir']);
+
                     pkk_number = ('000' + result['pkk_number']).substr(-3)
                     $('#pkkNumber').val("pkk"+pkk_number);
                     swal("Done!", "Successfully Check Status", "success");
@@ -738,41 +739,71 @@
                 jumlahkk.push(this.value);
             });
 
+            var nilaiAkhir = $('#nilaiAkhir').val();
+
+            totalNilaiAkhir = 0;
+            $('input[name="jumlahkk[]"]').each(function(){
+                    var na = parseInt($(this).val()); // to get the stock count
+                    totalNilaiAkhir += na; // calculate total Stocks
+            });
+
+            if(nilaiAkhir == ""){
+                nilaiAkhirFinal = totalNilaiAkhir;
+            }else{
+                nilaiAkhirFinal = parseInt(nilaiAkhir)+totalNilaiAkhir
+            }
+
+            // console.log(nilaiAkhir);
+
             if(checkValue(nilaikk) == false){
                 swal("Error Submit Form!", "Your Input cannot be null", "error");
             }else{
-                $.ajax({
-                url: '/api/v1/storeNilai',
-                data: {
-                    "pkk_number": pkk_number,
-                    "user_id_ternilai": user_ternilai,
-                    "user_id_penilai": user_penilai,
-                    "faktor_id": faktorid,
-                    "bobot": bobotkk,
-                    "nilai": nilaikk,
-                    "jumlah": jumlahkk,
-                    "tahun": year,
-                    "periode": periode +year,
-                    "status_kk" : "close"
-                },
-                method: 'post',
-                type: 'json',
-                success: function (result) {
-                    console.log("sukses post kemampuan kerja");
-                    console.log(result);
-                    swal({
-                        title: "Done!", 
-                        text: "Successfully submit", 
-                        type: "success"
+                swal({
+                title: "Are you sure with the score?",
+                text: "Data will store to database!!",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "Submit",
+                cancelButtonText: "Cancel"
+                }, function () {
+                    $.ajax({
+                        url: '/api/v1/storeNilai',
+                        data: {
+                            "pkk_number": pkk_number,
+                            "user_id_ternilai": user_ternilai,
+                            "user_id_penilai": user_penilai,
+                            "faktor_id": faktorid,
+                            "bobot": bobotkk,
+                            "nilai": nilaikk,
+                            "jumlah": jumlahkk,
+                            "tahun": year,
+                            "periode": periode +year,
+                            "nilaiAkhir": nilaiAkhirFinal,
+                            "status_kk" : "close"
                         },
-                    function(){ 
-                        location.reload();
+                        method: 'post',
+                        type: 'json',
+                        success: function (result) {
+                            console.log("sukses post kemampuan kerja");
+                            console.log(result);
+                            swal({
+                                title: "Done!", 
+                                text: "Successfully submit", 
+                                type: "success"
+                                },
+                            function(){ 
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log(xhr);
+                        }
                     });
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr);
-                }
-            });
+                });
+                
             }
             
         });
@@ -806,43 +837,72 @@
                 jumlahdisiplin.push(this.value);
             });
 
+            var nilaiAkhir = $('#nilaiAkhir').val();
+
+            totalNilaiAkhir = 0;
+            $('input[name="jumlahdisiplin[]"]').each(function(){
+                    var na = parseInt($(this).val()); // to get the stock count
+                    totalNilaiAkhir += na; // calculate total Stocks
+            });
+
+            if(nilaiAkhir == ""){
+                nilaiAkhirFinal = totalNilaiAkhir;
+            }else{
+                nilaiAkhirFinal = parseInt(nilaiAkhir)+totalNilaiAkhir
+            }
+
+
             if(checkValue(nilaidisiplin) == false){
                 swal("Error Submit Form!", "Your Input cannot be null", "error");
             }else{
-                $.ajax({
-                url: '/api/v1/storeNilai',
-                data: {
-                    "pkk_number": pkk_number,
-                    "user_id_ternilai": user_ternilai,
-                    "user_id_penilai": user_penilai,
-                    "faktor_id": faktorid,
-                    "bobot": bobotdisiplin,
-                    "nilai": nilaidisiplin,
-                    "jumlah": jumlahdisiplin,
-                    "tahun": year,
-                    "periode": periode +year,
-                    "status_disiplin" : "close"
-                },
-                method: 'post',
-                type: 'json',
-                success: function (result) {
-                    console.log("sukses post disiplin");
-                    console.log(result);
-                    swal({
-                        title: "Done!", 
-                        text: "Successfully submit", 
-                        type: "success"
-                        },
-                    function(){ 
-                        location.reload();
+                swal({
+                    title: "Are you sure with the score?",
+                    text: "Data will store to database!!",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "Submit",
+                    cancelButtonText: "Cancel"
+                    }, function () {
+                        
+                        $.ajax({
+                            url: '/api/v1/storeNilai',
+                            data: {
+                                "pkk_number": pkk_number,
+                                "user_id_ternilai": user_ternilai,
+                                "user_id_penilai": user_penilai,
+                                "faktor_id": faktorid,
+                                "bobot": bobotdisiplin,
+                                "nilai": nilaidisiplin,
+                                "jumlah": jumlahdisiplin,
+                                "tahun": year,
+                                "periode": periode +year,
+                                "nilaiAkhir": nilaiAkhirFinal,
+                                "status_disiplin" : "close"
+                            },
+                            method: 'post',
+                            type: 'json',
+                            success: function (result) {
+                                console.log("sukses post disiplin");
+                                console.log(result);
+                                swal({
+                                    title: "Done!", 
+                                    text: "Successfully submit", 
+                                    type: "success"
+                                    },
+                                function(){ 
+                                    location.reload();
+                                });
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                console.log(xhr);
+                            }
+                        });
+
                     });
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr);
-                }
-            });
             }
-            
             
         });
 
@@ -875,42 +935,73 @@
                 jumlahattitude.push(this.value);
             });
 
+            var nilaiAkhir = $('#nilaiAkhir').val();
+
+            totalNilaiAkhir = 0;
+            $('input[name="jumlahattitude[]"]').each(function(){
+                    var na = parseInt($(this).val()); // to get the stock count
+                    totalNilaiAkhir += na; // calculate total Stocks
+             });
+
+            if(nilaiAkhir == ""){
+                nilaiAkhirFinal = totalNilaiAkhir;
+            }else{
+                nilaiAkhirFinal = parseInt(nilaiAkhir)+totalNilaiAkhir
+            }
+
+            
+            // console.log(totalNilaiAkhir);
+
             if(checkValue(nilaiattitude) == false){
                 swal("Error Submit Form!", "Your Input cannot be null", "error");
             }else{
-                $.ajax({
-                url: '/api/v1/storeNilai',
-                data: {
-                    "pkk_number": pkk_number,
-                    "user_id_ternilai": user_ternilai,
-                    "user_id_penilai": user_penilai,
-                    "faktor_id": faktorid,
-                    "bobot": bobotattitude,
-                    "nilai": nilaiattitude,
-                    "jumlah": jumlahattitude,
-                    "tahun": year,
-                    "periode": periode +year,
-                    "status_attitude" : "close"
-                },
-                method: 'post',
-                type: 'json',
-                success: function (result) {
-                    console.log("sukses post attitude");
-                    swal({
-                        title: "Done!", 
-                        text: "Successfully submit", 
-                        type: "success"
-                        },
-                    function(){ 
-                        location.reload();
-                    }
-                    );
-                    location.reload();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr);
-                }
-            });
+                swal({
+                    title: "Are you sure with the score?",
+                    text: "Data will store to database!!",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "Submit",
+                    cancelButtonText: "Cancel"
+                    }, function () {
+                        $.ajax({
+                            url: '/api/v1/storeNilai',
+                            data: {
+                                "pkk_number": pkk_number,
+                                "user_id_ternilai": user_ternilai,
+                                "user_id_penilai": user_penilai,
+                                "faktor_id": faktorid,
+                                "bobot": bobotattitude,
+                                "nilai": nilaiattitude,
+                                "jumlah": jumlahattitude,
+                                "tahun": year,
+                                "periode": periode +year,
+                                "nilaiAkhir": nilaiAkhirFinal,
+                                "status_attitude" : "close"
+                            },
+                            method: 'post',
+                            type: 'json',
+                            success: function (result) {
+                                console.log("sukses post attitude");
+                                swal({
+                                    title: "Done!", 
+                                    text: "Successfully submit", 
+                                    type: "success"
+                                    },
+                                function(){ 
+                                    location.reload();
+                                }
+                                );
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                console.log(xhr);
+                            }
+                        });
+                    });
+
+                
             }
            
         });

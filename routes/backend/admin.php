@@ -12,14 +12,17 @@ Route::patch('/change_password', 'AdminController@update_password')->name('chang
 
 /* ===== Blog Start =========== */
 
-// Blog Controller
+// kinerja Controller
 Route::resource('kinerja', 'KinerjaController');
 Route::get('/allPenilaian', 'KinerjaController@getAll')->name('allPenilaian');
 Route::post('/storeNilai', 'KinerjaController@storeNilai')->name('storeNilai');
 Route::delete('/deleteFaktor/{id}', 'KinerjaController@deleteFaktor');
 
-/* ===== Blog End =========== */
+/* ===== kinerja End =========== */
 
+/* ===== Laporan PKK End =========== */
+Route::resource('laporanPKK', 'LaporanpkkController');
+Route::get('/allLaporanPKK', 'LaporanpkkController@getAll')->name('allLaporanPKK');
 
 /* ===== Access Management Start =========== */
 Route::resource('users', 'UserController');

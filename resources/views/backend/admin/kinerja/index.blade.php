@@ -242,8 +242,13 @@
 </div>
 
 <div class="row" id="forminputkinerja">
+    
     <div class="col-md-12 col-sm-12">
         <div class="main-card mb-3 card">
+        <div class="card-header">
+    
+        Evaluasi Kinerja
+  </div>
             <div class="card-body">
                 <nav>
                     <div class="nav nav-tabs row" id="nav-tab" role="tablist">

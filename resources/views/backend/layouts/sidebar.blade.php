@@ -44,11 +44,12 @@
                         Dashboard
                     </a>
                 </li>
-                <li>
+                <li style="height:55px">
                             <a href="{{ URL :: to('/admin/kinerja') }}">
-                            <i class="metismenu-icon pe-7s-upload"></i><span> Input Data Karyawan</span>
+                            <i class="metismenu-icon pe-7s-upload"></i><span>Pengukuran Kinerja<br>Karyawan</span>
                             </a>
                         </li>
+                        <br>
                 <li>
                     <a href="#">
                         <i class="metismenu-icon pe-7s-menu"></i>

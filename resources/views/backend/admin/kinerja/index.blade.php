@@ -504,18 +504,19 @@
     $("#manage_all").on("click", ".edit", function () {
 
         $("#modal_data").empty();
-        $('.modal-title').text('Edit Blogs'); // Set Title to Bootstrap modal title
+        $('.modal-title').text('Edit Faktor'); // Set Title to Bootstrap modal title
 
         var id = $(this).attr('id');
 
         $.ajax({
-            url: 'blogs/' + id + '/edit',
+            url: 'kinerja/' + id + '/edit',
             type: 'get',
             success: function (data) {
                 $("#modal_data").html(data.html);
                 $('#myModal').modal('show'); // show bootstrap modal
             },
             error: function (result) {
+                console.log(result);
                 $("#modal_data").html("Sorry Cannot Load Data");
             }
         });

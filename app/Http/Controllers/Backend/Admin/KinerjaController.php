@@ -179,7 +179,7 @@ class KinerjaController extends Controller
    /**
     * Display the specified resource.
     *
-    * @param  \App\Models\Blog $blog
+    * @param  \App\Models\Penilaian $penilaian
     *
     * @return \Illuminate\Http\Response
     */
@@ -196,14 +196,15 @@ class KinerjaController extends Controller
    /**
     * Show the form for editing the specified resource.
     *
-    * @param  \App\Models\Blog $blog
+     * @param  \App\Models\Penilaian $penilaian
     *
     * @return \Illuminate\Http\Response
     */
-   public function edit(Request $request, Blog $blog)
+   public function edit(Request $request, Penilaian $faktor, $id)
    {
       if ($request->ajax()) {
-         $view = View::make('backend.admin.blog.edit', compact('blog'))->render();
+         $faktor = Penilaian::findOrFail($id);
+         $view = View::make('backend.admin.kinerja.edit', compact('faktor'))->render();
          return response()->json(['html' => $view]);
       } else {
          return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);
@@ -214,76 +215,37 @@ class KinerjaController extends Controller
     * Update the specified resource in storage.
     *
     * @param  \Illuminate\Http\Request $request
-    * @param  \App\Models\Blog $blog
+     * @param  \App\Models\Penilaian $penilaian
     *
     * @return \Illuminate\Http\Response
     */
-   public function update(Request $request, Blog $blog)
+   public function update(Request $request, Penilaian $faktor, $id)
    {
       if ($request->ajax()) {
-         $haspermision = auth()->user()->can('blog-edit');
-         if ($haspermision) {
-
-            $rules = [
-              'title' => 'required',
-              'photo' => 'max:2048|dimensions:max_width=2000,max_height=1000', // 2mb
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-               return response()->json([
-                 'type' => 'error',
-                 'errors' => $validator->getMessageBag()->toArray()
-               ]);
-            } else {
-
-               if ($request->hasFile('photo')) {
-                  $extension = Input::file('photo')->getClientOriginalExtension();;
-                  if ($extension == "jpg" || $extension == "jpeg" || $extension == "png") {
-                     if (Input::file('photo')->isValid()) {
-                        $destinationPath = 'assets/images/blog'; // upload path
-                        $extension = Input::file('photo')->getClientOriginalExtension(); // getting image extension
-                        $fileName = time() . '.' . $extension; // renameing image
-                        $file_path = 'assets/images/blog/' . $fileName;
-                        Input::file('photo')->move($destinationPath, $fileName); // uploading file to given path
-                        $upload_ok = 1;
-
-                     } else {
-                        return response()->json([
-                          'type' => 'error',
-                          'message' => "<div class='alert alert-warning'>File is not valid</div>"
-                        ]);
-                     }
-                  } else {
-                     return response()->json([
-                       'type' => 'error',
-                       'message' => "<div class='alert alert-warning'>Error! File type is not valid</div>"
-                     ]);
-                  }
-               } else {
-                  $upload_ok = 1;
-                  $file_path = $request->input('SelectedFileName');
-               }
-
-               if ($upload_ok == 0) {
-                  return response()->json([
-                    'type' => 'error',
-                    'message' => "<div class='alert alert-warning'>Sorry Failed</div>"
-                  ]);
-               } else {
-                  $blog = Blog::findOrFail($blog->id);
-                  $blog->title = $request->input('title');
-                  $blog->description = $request->input('description');
-                  $blog->category = $request->input('category');
-                  $blog->uploaded_by = auth()->user()->id;
-                  $blog->file_path = $file_path;
-                  $blog->status = $request->input('status');
-                  $blog->save(); //
-                  return response()->json(['type' => 'success', 'message' => "Successfully Updated"]);
-               }
-            }
+         $rules = [
+            'faktor' => 'required',
+            'kriteria' => 'required',
+            'bobot' => 'required',
+          ];
+         $validator = Validator::make($request->all(), $rules);
+         if ($validator->fails()) {
+            return response()->json([
+              'type' => 'error',
+              'errors' => $validator->getMessageBag()->toArray()
+            ]);
          } else {
-            abort(403, 'Sorry, you are not authorized to access the page');
+            $faktor = Penilaian::findOrFail($id);
+            $faktor->faktor = $request->input('faktor');
+            $faktor->kriteria = $request->input('kriteria');
+            $faktor->bobot = $request->input('bobot');
+            $faktor->nilai0 = $request->input('nilai0');
+            $faktor->nilai1 = $request->input('nilai1');
+            $faktor->nilai2 = $request->input('nilai2');
+            $faktor->nilai4 = $request->input('nilai4');
+            $faktor->nilai5 = $request->input('nilai5');
+            $faktor->save();
+
+            return response()->json(['type' => 'success', 'message' => "Successfully Updated"]);
          }
       } else {
          return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);

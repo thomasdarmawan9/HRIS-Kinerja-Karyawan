@@ -1,66 +1,72 @@
 <form id='edit' action="" enctype="multipart/form-data" method="post" accept-charset="utf-8">
     <div id="status"></div>
     {{method_field('PATCH')}}
+    <div class="row">
     <div class="form-group col-md-12 col-sm-12">
-        <label for=""> Title </label>
-        <input type="text" class="form-control" id="title" name="title" value="{{ $news->title }}"
-               placeholder="" required>
-        <span id="error_title" class="has-error"></span>
-    </div>
-    <div class="clearfix"></div>
-    <div class="form-group col-md-12 col-sm-12">
-        <label for=""> Description </label>
-        <textarea type="text" class="form-control" id="description" name="description"
-                  placeholder="">{{ $news->description }}</textarea>
-        <span id="error_description" class="has-error"></span>
-    </div>
-    <div class="clearfix"></div>
-    <div class="form-group col-md-2 col-sm-12">
-        <label for=""> Category </label>
-        <select name="category" id="category" class="form-control" required>
-            <option value="{{ $news->category }}">{{ $news->category }}</option>
-            <option value="Notice Board">Notice Board</option>
-            <option value="Latest News">Latest News</option>
-            <option value="Job News">Job News</option>
-        </select>
-        <span id="error_category" class="has-error"></span>
-    </div>
-    <div class="form-group col-md-3">
-        <label for=""> Status </label><br/>
-        <input type="radio" name="status" class="flat-green"
-               value="1" {{ ( $news->status == 1 ) ? 'checked' : '' }} /> Active
-        <input type="radio" name="status" class="flat-green"
-               value="0" {{ ( $news->status == 0 ) ? 'checked' : '' }}/> In Active
-    </div>
-    <div class="col-md-7">
-        <label for="photo">Upload Image</label>
-        <input id="photo" type="file" name="photo" style="display:none">
-        <div class="input-group">
-            <div class="input-group-btn">
-                <a class="btn btn-success" onclick="$('input[id=photo]').click();">Browse</a>
-            </div><!-- /btn-group -->
-            <input type="text" name="SelectedFileName" class="form-control" id="SelectedFileName"
-                   value="{{ $news->file_path  }}" readonly>
+            <label for=""> Kriteria </label>
+            <input type="text" class="form-control" id="kriteria" name="kriteria" value="{{$faktor->kriteria}}"
+                   placeholder="" required>
+            <span id="error_title" class="has-error"></span>
         </div>
         <div class="clearfix"></div>
-        <p class="help-block">File must be jpg, jpeg, png. Slider width 1920px and heigth 760px and less than 2mb</p>
-        <script type="text/javascript">
-            $('input[id=photo]').change(function () {
-                $('#SelectedFileName').val($(this).val());
-            });
-        </script>
-        <span id="error_photo" class="has-error"></span>
-    </div>
+        <div class="form-group col-md-12 col-sm-12">
+            <label for=""> Faktor </label>
+            <input type="text" class="form-control" id="faktor" name="faktor" value="{{$faktor->faktor}}"
+                      placeholder=""></input>
+            <span id="error_description" class="has-error"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-12 col-sm-12">
+            <label for=""> Bobot </label>
+            <input type="text" class="form-control" id="bobot" name="bobot" value="{{$faktor->bobot}}" placeholder=""></input>
+            <span id="error_description" class="has-error"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-4 col-sm-12">
+            <label for=""> Nilai 0 </label>
+            <input type="text" class="form-control" id="nilai0" name="nilai0" value="{{$faktor->nilai0}}"
+                      placeholder=""></input>
+            <span id="error_category" class="has-error"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-4 col-sm-12">
+            <label for=""> Nilai 1 </label>
+            <input type="text" class="form-control" id="nilai1" name="nilai1" value="{{$faktor->nilai1}}"
+                      placeholder=""></input>
+            <span id="error_category" class="has-error"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-4 col-sm-12">
+            <label for=""> Nilai 2 </label>
+            <input type="text" class="form-control" id="nilai2" name="nilai2" value="{{$faktor->nilai2}}"
+                      placeholder=""></input>
+            <span id="error_category" class="has-error"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-4 col-sm-12">
+            <label for=""> Nilai 4 </label>
+            <input type="text" class="form-control" id="nilai4" name="nilai4" value="{{$faktor->nilai4}}"
+                      placeholder=""></input>
+            <span id="error_category" class="has-error"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-4 col-sm-12">
+            <label for=""> Nilai 5 </label>
+            <input type="text" class="form-control" id="nilai5" name="nilai5" value="{{$faktor->nilai5}}"
+                      placeholder=""></input>
+            <span id="error_category" class="has-error"></span>
+        </div>
+               
     <div class="clearfix"></div>
-    <div class="form-group col-md-12">
-        <button type="submit" class="btn btn-success button-submit"
+    <div class="form-group col-md-12 mt-3">
+        <button type="submit" class="btn btn-success button-submit w-100"
                 data-loading-text="Loading..."><span class="fa fa-save fa-fw"></span> Save
         </button>
-        <button type="button" class="btn btn-default" data-dismiss="modal"><span
-                class="fa fa-times-circle fa-fw"></span> Cancel
-        </button>
     </div>
     <div class="clearfix"></div>
+    </div>
+  
+ 
 </form>
 
 <script>
@@ -72,7 +78,7 @@
         $('#edit').validate({// <- attach '.validate()' to your form
             // Rules for form validation
             rules: {
-                title: {
+                faktor: {
                     required: true
                 }
             },
@@ -89,7 +95,7 @@
                 myData.append('_token', CSRF_TOKEN);
 
                 $.ajax({
-                    url: 'news/' + '{{ $news->id }}',
+                    url: 'kinerja/' + '{{ $faktor->id }}',
                     type: 'POST',
                     data: myData,
                     dataType: 'json',
@@ -120,6 +126,8 @@
                             $(".button-submit").prop('disabled', false); // disable button
 
                         }
+                    }, error: function(xhr, status, error) {
+                            console.log(xhr);
                     }
                 });
             }

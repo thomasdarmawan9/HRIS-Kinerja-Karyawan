@@ -615,23 +615,10 @@
                 }
             });
         });
-        
-        // CHECK DATA FIRST
-        $("#check").click(function(event){
-            var user_ternilai = $("#name").val();
-            var periodePenilaian = $("#periodePenilaian").val();
-            var year = $("#year").val();
-            var periode = periodePenilaian + year ;
 
-            // console.log(periode);
-            $.ajax({
-                url: '/api/v1/checkStatus/'+ user_ternilai +"/"+ periode,
-                method: 'get',
-                type: 'json',
-                success: function (result) {
-                    // console.log("sukses check status data");
-                    // console.log(result);
-                    if(result['SK'] == "close" && result['SD'] == "close" && result['SA'] == "close"){
+        // FUNCION LOGIC RELOAD STATUS
+        function reloadStatus(result){
+            if(result['SK'] == "close" && result['SD'] == "close" && result['SA'] == "close"){
                         $("#nav-nilai-akhir").removeClass('disabled');
                         $('#na-close').text(result['nilaiAkhir']);
 
@@ -673,6 +660,24 @@
                         $(".SA").removeClass('btn-primary');
                         $(".SA").addClass('btn-success');
                     }
+        }
+        
+        // CHECK DATA FIRST
+        $("#check").click(function(event){
+            var user_ternilai = $("#name").val();
+            var periodePenilaian = $("#periodePenilaian").val();
+            var year = $("#year").val();
+            var periode = periodePenilaian + year ;
+
+            // console.log(periode);
+            $.ajax({
+                url: '/api/v1/checkStatus/'+ user_ternilai +"/"+ periode,
+                method: 'get',
+                type: 'json',
+                success: function (result) {
+                    // console.log("sukses check status data");
+                    // console.log(result);
+                    reloadStatus(result);
                     
                     $('#infostatus').show();
                     // console.log(result);
@@ -729,7 +734,7 @@
             var nilaiHitung = $("#nilaidisiplin-" + dataid).val();
             var jumlahHitung = bobotHitung * nilaiHitung;
             $("#jumlahdisiplin-" + dataid).val(jumlahHitung);
-            console.log(jumlahHitung);
+            // console.log(jumlahHitung);
         });
 
         $('.nilaiattitude').change(function () {
@@ -831,7 +836,9 @@
                                 type: "success"
                                 },
                             function(){ 
-                                location.reload();
+                                $(".SK").removeClass('btn-primary');
+                                $(".SK").addClass('btn-success');
+                                $("html").scrollTop(0);
                             });
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -929,7 +936,9 @@
                                     type: "success"
                                     },
                                 function(){ 
-                                    location.reload();
+                                    $(".SD").removeClass('btn-primary');
+                                    $(".SD").addClass('btn-success');
+                                    $("html").scrollTop(0);
                                 });
                             },
                             error: function (xhr, ajaxOptions, thrownError) {
@@ -1027,7 +1036,9 @@
                                     type: "success"
                                     },
                                 function(){ 
-                                    location.reload();
+                                    $(".SA").removeClass('btn-primary');
+                                    $(".SA").addClass('btn-success');
+                                    $("html").scrollTop(0);
                                 }
                                 );
                             },

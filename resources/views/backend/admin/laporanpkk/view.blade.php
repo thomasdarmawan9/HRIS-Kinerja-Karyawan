@@ -8,9 +8,9 @@
                 <td> {{ $role->name }} </td>
             </tr>
             <tr>
-                <td class="subject"> Guard Name</td>
+                <td class="subject"> Jabatan</td>
                 <td> :</td>
-                <td> {{ $role->guard_name }} </td>
+                <td> {{ $role->jabatan }} </td>
             </tr>
             <tr>
                 <td class="subject"> Assigned Permissions</td>

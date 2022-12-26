@@ -7,11 +7,11 @@
                 <div class="page-title-icon">
                     <i class="pe-7s-users icon-gradient bg-mean-fruit"> </i>
                 </div>
-                <div>All Roles</div>
+                <div>All Jabatan</div>
                 <div class="d-inline-block ml-2">
                         <button class="btn btn-success" onclick="create()"><i
                                 class="glyphicon glyphicon-plus"></i>
-                            New Role
+                            New Jabatan
                         </button>
                 </div>
             </div>
@@ -26,7 +26,8 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Role Name</th>
+                                <th>Jabatan</th>
+                                <th>Role</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -54,6 +55,7 @@
                 ajax: '/admin/allRoles',
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'jabatan', name: 'jabatan'},
                     {data: 'name', name: 'name'},
                     {data: 'action', name: 'action'}
                 ],

@@ -2,9 +2,19 @@
     <div class="form-row">
         <div id="status"></div>
         <div class="form-group col-md-12 col-sm-12">
-            <label for=""> Role Name </label>
-            <input type="text" class="form-control" id="name" name="name" value=""
+            <label for=""> Jabatan </label>
+            <input type="text" class="form-control" id="jabatan" name="jabatan" value=""
                    placeholder="" required>
+            <span id="error_name" class="has-error"></span>
+        </div>
+        <div class="form-group col-md-12 col-sm-12">
+            <label for=""> Role Name </label>
+            <select class="form-control" name="name">
+                <option value="" selected disabled>--Select Role--</option>
+                <option value="HR">HR</option>
+                <option value="Atasan Langsung">Atasan Langsung</option>
+                <option value="Karyawan">Karyawan</option>
+            </select>
             <span id="error_name" class="has-error"></span>
         </div>
         <br/><br/>
@@ -74,7 +84,9 @@
 
                                 }
 
-                            }
+                            },   error: function(xhr, status, error) {
+                            console.log(xhr);
+                    }
                         });
 
             }

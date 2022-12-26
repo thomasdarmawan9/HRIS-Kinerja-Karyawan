@@ -63,7 +63,7 @@
                                     <label for="tahun">Tahun :</label>
                                 </div>
                                 <div class="col-9" style="padding-left:5px;">
-                                    {!! Form::selectYear('year', date('Y'), date('Y')-100, null,
+                                    {!! Form::selectYear('year', date('Y'), 2000, null,
                                     ['class'=>'form-control', 'id'=>'year', 'style'=>'font-size:12px']) !!}
                                 </div>
                             </div>

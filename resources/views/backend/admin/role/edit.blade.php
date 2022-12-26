@@ -2,8 +2,17 @@
 <div class="form-row">
     <div id="status"></div>
     <div class="form-group col-md-12 col-sm-12">
-        {{ Form::label('name', 'Role Name') }}
-        {{ Form::text('name', null, array('class' => 'form-control')) }}
+        <label for=""> Role </label>
+        <select class="form-control" name="name">
+                <option value="HR" {{ ( $role->name == "HR") ? 'selected' : '' }}>HR</option>
+                <option value="Atasan Langsung" {{ ( $role->name == "Atasan Langsung") ? 'selected' : '' }}>Atasan Langsung</option>
+                <option value="Karyawan" {{ ( $role->name == "Karyawan") ? 'selected' : '' }}>Karyawan</option>
+        </select>
+        <span id="error_name" class="has-error"></span>
+    </div>
+    <div class="form-group col-md-12 col-sm-12">
+        {{ Form::label('jabatan', 'Jabatan') }}
+        {{ Form::text('jabatan', null, array('class' => 'form-control')) }}
         <span id="error_name" class="has-error"></span>
     </div>
     <div class="clearfix"></div>

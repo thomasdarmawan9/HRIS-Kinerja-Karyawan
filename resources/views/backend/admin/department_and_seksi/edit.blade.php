@@ -8,8 +8,14 @@
         <span id="error_name" class="has-error"></span>
     </div>
     <div class="form-group col-md-12 col-sm-12">
-        {{ Form::label('name', 'Leader Team Name') }}
-        {{ Form::text('leader_team_name', null, array('class' => 'form-control')) }}
+    <label for=""> Department Leader </label>
+    <select class="form-control" id="leader_team_name" name="leader_team_name">
+        @foreach($leader_team_name as $user)
+            <option value="{{ $user->name }}" {{ $user->name == $department->leader_team_name ? 'selected' : '' }}>{{ $user->name }}</option>
+        @endforeach
+    </select>
+             <!-- <select class="form-control" name="leader_team_name" id="leader_team_name">
+            </select> -->
         <span id="error_name" class="has-error"></span>
     </div>
     <div class="clearfix"></div>

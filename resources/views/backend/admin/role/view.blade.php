@@ -8,22 +8,9 @@
                 <td> {{ $role->name }} </td>
             </tr>
             <tr>
-                <td class="subject"> Guard Name</td>
+                <td class="subject"> jabatan</td>
                 <td> :</td>
-                <td> {{ $role->guard_name }} </td>
-            </tr>
-            <tr>
-                <td class="subject"> Assigned Permissions</td>
-                <td> :</td>
-                <td>
-                    @if($role->name === 'admin') {{ 'Admin have all permissions by default' }} @endif
-                    @php $no= 1; @endphp
-                    @foreach($permissions as $permission)
-                        <span class="col-md-4">
-                           {{ $no++ . ') ' }} {{ $permission->name }}
-                      </span>
-                    @endforeach
-                </td>
+                <td> {{ $role->jabatan }} </td>
             </tr>
             </tbody>
         </table>

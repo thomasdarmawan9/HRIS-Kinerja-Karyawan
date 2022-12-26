@@ -43,8 +43,8 @@ class UserController extends Controller
             })
             ->addColumn('action', function ($user) use ($can_edit, $can_delete) {
                 $html = '<div class="btn-group">';
-                $html .= '<a data-toggle="tooltip" ' . $can_edit . '  id="' . $user->id . '" class="btn btn-xs btn-info mr-1 edit" title="Edit"><i class="fa fa-edit"></i> </a>';
-                $html .= '<a data-toggle="tooltip" ' . $can_delete . ' id="' . $user->id . '" class="btn btn-xs btn-danger mr-1 delete" title="Delete"><i class="fa fa-trash"></i> </a>';
+                $html .= '<a data-toggle="tooltip" ' . $can_edit . '  id="' . $user->id . '" class="btn btn-xs btn-primary mr-1 edit text-white" title="Edit"><i class="fa fa-edit"></i> </a>';
+                $html .= '<a data-toggle="tooltip" ' . $can_delete . ' id="' . $user->id . '" class="btn btn-xs btn-danger mr-1 delete text-white" title="Delete"><i class="fa fa-trash"></i> </a>';
                 $html .= '</div>';
                 return $html;
             })
@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $role = DB::select('SELECT id, name from roles');
+        $jabatan = DB::select('SELECT id, jabatan from roles');
 
         $department = DB::select('SELECT id, name_division from divisi');
 
@@ -74,7 +74,7 @@ class UserController extends Controller
             if ($haspermision) {
 
                 $view = View::make('backend.admin.user.create')->render();
-                return response()->json(['html' => $view, 'role' => $role,  'department' => $department,  'seksi' => $seksi]);
+                return response()->json(['html' => $view, 'jabatan' => $jabatan,  'department' => $department,  'seksi' => $seksi]);
             } else {
                 abort(403, 'Sorry, you are not authorized to access the page');
             }
@@ -115,17 +115,31 @@ class UserController extends Controller
                         $admin->name = $request->input('name');
                         $admin->email = $request->input('email');
                         $admin->jabatan = $request->input('jabatan');
-                        $admin->password = Hash::make($request->password);
-                        $admin->save();
+                        $admin->password = Hash::make($request->input('password'));
+
+                        $create = $admin->save();
 
                         $lastInserID = $admin->id;
+                        // DB::commit();
+                        // return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
 
-                        DB::insert('INSERT INTO model_has_roles (role_id, model_type, model_id) values (?, ?, ?)', [$request->input('role'), "App\Models\Admin",$lastInserID]);
+                        $role = DB::SELECT('SELECT id, name FROM roles WHERE jabatan = "'. $request->input('jabatan'). '"');
+    
+                        DB::insert('INSERT INTO model_has_roles (role_id, model_type, model_id) values (?, ?, ?)', [$role[0]->id, $role[0]->name ,$lastInserID]);
 
-                        DB::insert('INSERT INTO user_has_seksi (user_id, seksi_id, divisi_id) values (?, ?, ?)', [$lastInserID, $request->input('seksi'), $request->input('department') ]);
+                        if($request->input('department') != "" && $request->input('seksi') != ""){
+                            
+                            DB::insert('INSERT INTO user_has_seksi (user_id, seksi_id, divisi_id) values (?, ?, ?)', [$lastInserID, $request->input('seksi'), $request->input('department') ]);
+    
+                            DB::commit();
 
-                        DB::commit();
-                        return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
+                            return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
+                        }else {
+                            DB::commit();
+                            return response()->json(['type' => 'success', 'message' => "Successfully Created User Need Update!"]);
+                        }
+                      
+                        // return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
 
                     } catch (\Exception $e) {
                         DB::rollback();

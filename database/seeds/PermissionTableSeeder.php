@@ -19,14 +19,14 @@ class PermissionTableSeeder extends Seeder
 
     {
 
-        $permissions = [
-            'role-view', 'role-create', 'role-edit', 'role-delete',
-            'permission-view', 'permission-create', 'permission-edit', 'permission-delete',
-            'user-view', 'user-create', 'user-edit', 'user-delete'
-        ];
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission, 'guard_name' => 'admin']);
-        }
+        // $permissions = [
+        //     'role-view', 'role-create', 'role-edit', 'role-delete',
+        //     'permission-view', 'permission-create', 'permission-edit', 'permission-delete',
+        //     'user-view', 'user-create', 'user-edit', 'user-delete'
+        // ];
+        // foreach ($permissions as $permission) {
+        //     Permission::create(['name' => $permission, 'guard_name' => 'admin']);
+        // }
 
     }
 

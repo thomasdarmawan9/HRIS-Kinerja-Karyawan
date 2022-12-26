@@ -75,7 +75,9 @@ class DepartmentSeksiController extends Controller
      */
     public function createDepartment(Request $request)
     {
-        $leader_team_name = DB::select('SELECT id,name FROM admins WHERE jabatan != "Staff"');
+        $leader_team_name = DB::select('SELECT admins.id,admins.name FROM admins 
+        JOIN `model_has_roles` ON model_has_roles.model_id = admins.id 
+        WHERE model_has_roles.model_type != "Karyawan" ');
 
         if ($request->ajax()) {
             $view = View::make('backend.admin.department_and_seksi.create')->render();
@@ -89,7 +91,9 @@ class DepartmentSeksiController extends Controller
     {
         $department_name = DB::select('SELECT id, name_division from divisi');
 
-        $leader_seksi_name = DB::select('SELECT id,name FROM admins WHERE jabatan != "Staff"');
+        $leader_seksi_name = DB::select('SELECT admins.id,admins.name FROM admins 
+        JOIN `model_has_roles` ON model_has_roles.model_id = admins.id 
+        WHERE model_has_roles.model_type != "Karyawan" ');
 
         if ($request->ajax()) {
             $view = View::make('backend.admin.department_and_seksi.createseksi')->render();
@@ -180,9 +184,13 @@ class DepartmentSeksiController extends Controller
     public function edit(Request $request, $id)
     {
         if ($request->ajax()) {
+            $leader_team_name = DB::select('SELECT admins.id,admins.name FROM admins 
+            JOIN `model_has_roles` ON model_has_roles.model_id = admins.id 
+            WHERE model_has_roles.model_type != "Karyawan" ');
+
             $department = Department::findOrFail($id);
-            $view = View::make('backend.admin.department_and_seksi.edit', compact('department'))->render();
-            return response()->json(['html' => $view]);
+            $view = View::make('backend.admin.department_and_seksi.edit', compact('department','leader_team_name'))->render();
+            return response()->json(['html' => $view, 'departmentbyid' => $department,'leader_team_name' => $leader_team_name ]);
         } else {
             return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);
         }

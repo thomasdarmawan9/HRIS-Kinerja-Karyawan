@@ -180,13 +180,13 @@ trait HasRoles
 
         if (is_string($roles)) {
             return $guard
-                ? $this->roles->where('guard_name', $guard)->contains('name', $roles)
+                ? $this->roles->where('jabatan', $guard)->contains('name', $roles)
                 : $this->roles->contains('name', $roles);
         }
 
         if (is_int($roles)) {
             return $guard
-                ? $this->roles->where('guard_name', $guard)->contains('id', $roles)
+                ? $this->roles->where('jabatan', $guard)->contains('id', $roles)
                 : $this->roles->contains('id', $roles);
         }
 
@@ -204,7 +204,7 @@ trait HasRoles
             return false;
         }
 
-        return $roles->intersect($guard ? $this->roles->where('guard_name', $guard) : $this->roles)->isNotEmpty();
+        return $roles->intersect($guard ? $this->roles->where('jabatan', $guard) : $this->roles)->isNotEmpty();
     }
 
     /**
@@ -236,7 +236,7 @@ trait HasRoles
 
         if (is_string($roles)) {
             return $guard
-                ? $this->roles->where('guard_name', $guard)->contains('name', $roles)
+                ? $this->roles->where('jabatan', $guard)->contains('name', $roles)
                 : $this->roles->contains('name', $roles);
         }
 
@@ -250,7 +250,7 @@ trait HasRoles
 
         return $roles->intersect(
             $guard
-                ? $this->roles->where('guard_name', $guard)->pluck('name')
+                ? $this->roles->where('jabatan', $guard)->pluck('name')
                 : $this->getRoleNames()) == $roles;
     }
 

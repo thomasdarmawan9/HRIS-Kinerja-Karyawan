@@ -2,6 +2,10 @@
       novalidate>
     <div class="form-row">
         <div id="status"></div>
+        <div class="col-12"> 
+            <h5> Isi Data Karyawan</h5>
+            <hr>
+        </div>
         <div class="form-group col-md-6 col-sm-12">
             <label for=""> NIP </label>
             <input type="number" class="form-control" id="NIP" name="NIP" value="" placeholder="" required>
@@ -14,7 +18,10 @@
         </div>
         <div class="form-group col-md-6 col-sm-12">
             <label for=""> Jabatan </label>
-            <input type="text" class="form-control" id="jabatan" name="jabatan" value="" placeholder="" required>
+            <!-- <input type="text" class="form-control" id="jabatan" name="jabatan" value="" placeholder="" required> -->
+            <select class="form-control" name="jabatan" id="jabatan">
+                <option>--Select Jabatan</option>
+            </select>
             <span id="error_name" class="has-error"></span>
         </div>
         <div class="form-group col-md-6 col-sm-12">
@@ -33,19 +40,23 @@
             {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control','required')) !!}
             <span id="error_confirm-password" class="has-error"></span>
         </div>
-        <div class="form-group col-md-6 col-sm-6">
-            <label for=""> Role </label>
-            <select class="form-control" name="role" id="role">
-            </select>
+   
+        <div class="col-12"> 
+        <hr>
+            <h5> Pilih Department & Seksi </h5>
+            <hr>
         </div>
+        <br>
         <div class="form-group col-md-6 col-sm-6">
             <label for=""> Departement </label>
             <select class="form-control" name="department" id="department">
+            <option value="">--Select Department--</option>
             </select>
         </div>
         <div class="form-group col-md-6 col-sm-6">
             <label for=""> Seksi </label>
             <select class="form-control" name="seksi" id="seksi">
+            <option value="">--Select Seksi--</option>
             </select>
         </div>
         <!-- <div class="clearfix"></div>
@@ -113,6 +124,7 @@
                         $("#submit").prop('disabled', true); // disable button
                     },
                     success: function (data) {
+                        console.log(data);
                         if (data.type === 'success') {
                             reload_table();
                             notify_view(data.type, data.message);
@@ -135,7 +147,7 @@
 
                     }, 
                     error: function(xhr, status, error) {
-                    // console.log(xhr);
+                    console.log(xhr);
                     }
                 });
             }

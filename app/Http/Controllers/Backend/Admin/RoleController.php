@@ -21,6 +21,9 @@ class RoleController extends Controller
      */
     public function index()
     {
+        // $role = Role::find("2");
+        // dd($role->name);
+        // die();
         return view('backend.admin.role.index');
     }
 
@@ -73,7 +76,8 @@ class RoleController extends Controller
         if ($request->ajax()) {
             // Setup the validator
             $rules = [
-                'name' => 'required|unique:roles',
+                'name' => 'required',
+                'jabatan' => 'required',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -83,7 +87,7 @@ class RoleController extends Controller
                     'errors' => $validator->getMessageBag()->toArray()
                 ]);
             } else {
-                $role = Role::create(['name' => $request->input('name')]);
+                $role = Role::create(['name' => $request->input('name'),'jabatan' => $request->input('jabatan')]);
                 return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
             }
         } else {
@@ -125,7 +129,7 @@ class RoleController extends Controller
     public function edit(Request $request, $id)
     {
         if ($request->ajax()) {
-                $role = Role::findOrFail($id);
+                $role = Role::find($id);
                 $view = View::make('backend.admin.role.edit', compact('role'))->render();
                 return response()->json(['html' => $view]);
         } else {
@@ -147,6 +151,7 @@ class RoleController extends Controller
             // Setup the validator
             $rules = [
                 'name' => 'required|unique:roles,name,' . $role->id,
+                'jabatan' => 'required'
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -159,9 +164,10 @@ class RoleController extends Controller
 
                 $role = Role::findOrFail($role->id);
                 $role->name = $request->input('name');
+                $role->jabatan = $request->input('jabatan');
                 $role->save();
 
-                return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
+                return response()->json(['type' => 'success', 'message' => "Successfully Updated"]);
             }
         } else {
             return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);

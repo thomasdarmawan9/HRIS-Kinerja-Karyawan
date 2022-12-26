@@ -101,8 +101,8 @@
                     $("#modal_data").html(data.html);
                     $('#myModal').modal('show'); // show bootstrap modal
                     // console.log(data.role);
-                    $.each(data.role, function(index, data ){
-                        $("#role").append('<option value="' + data.id + '">' + data.name  + '</option>');
+                    $.each(data.jabatan, function(index, data ){
+                        $("#jabatan").append('<option value="' + data.jabatan + '">' + data.jabatan  + '</option>');
                     });
 
                     $.each(data.department, function(index, data ){

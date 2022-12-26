@@ -90,7 +90,7 @@
                         <li>
                             <a href="{{ URL :: to('/admin/roles') }}">
                                 <i class="metismenu-icon"></i>
-                                Roles
+                                Jabatan
                             </a>
                         </li>
                         <li>

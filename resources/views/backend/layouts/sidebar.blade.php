@@ -2,6 +2,10 @@
     .hamburger.is-active .hamburger-inner, .hamburger.is-active .hamburger-inner::before, .hamburger.is-active .hamburger-inner::after {
         background-color:white;
     }
+
+    /* .pkk:hover{
+        height:80px;
+    } */
 </style>
 <div class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
@@ -45,8 +49,9 @@
                     </a>
                 </li>
                 <li style="height:55px">
-                            <a href="{{ URL :: to('/admin/kinerja') }}">
-                            <i class="metismenu-icon pe-7s-upload"></i><span>Pengukuran Kinerja<br>Karyawan</span>
+               
+                            <a href="{{ URL :: to('/admin/kinerja') }}" class="pkk" style=" height:80px;"> <i class="metismenu-icon pe-7s-upload" style="top:25%;"></i>
+                           <span>Pengukuran Kinerja<br>Karyawan</span>
                             </a>
                         </li>
                         <br>

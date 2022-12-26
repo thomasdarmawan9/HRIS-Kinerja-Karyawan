@@ -536,6 +536,13 @@
             var depid = $(this).val();
             // console.log(depid);
             $("input[name='namaAtasan']").val("");
+            $("input[name='pkk_number']").val("Check dokumen status!");
+            $("#NIP").val("");
+            $("#jabatan").val("");
+            $('#forminputkinerja').hide();
+            $('#infostatus').hide();
+            $("select[name='seksi']").html("<option>--Select Seksi--</option>");
+            $("select[name='name']").html("<option>--Select User--</option>");
             $.ajax({
                 url: '/api/v1/getSeksiByDept/'+ depid,
                 method: 'get',
@@ -545,6 +552,7 @@
                     $("input[name='namaAtasan']").val(result.leaderDept[0]['leader_team_name']);
                     if(result.dataSeksi.length === 0){
                         $("select[name='seksi']").html("<option>--Select Seksi--</option>");
+                        $("select[name='name']").html("<option>--Select User--</option>");
                     }else{
                         $.each(result.dataSeksi,function(key, value)
                         {
@@ -562,6 +570,11 @@
         // GET DATA USER (HR)
         $('#seksi').change(function () {
             var seksiid = $(this).val();
+            $("#NIP").val("");
+            $("#jabatan").val("");
+            $('#forminputkinerja').hide();
+            $('#infostatus').hide();
+            $("select[name='name']").html("<option>--Select User--</option>");
             $.ajax({
                 url: '/api/v1/getUserBySeksi/'+ seksiid,
                 method: 'get',
@@ -569,13 +582,10 @@
                 success: function (result) {
                     // console.log(result.dataUser);
                     if(result.dataUser.length === 0){
-                        $("#NIP").val("");
-                        $("#jabatan").val("");
                         $("select[name='name']").html("<option>--Select User--</option>");
                     }else{
                         $.each(result.dataUser,function(key, value)
                         {
-                            // console.log('<option value="' + value["id"] + '">' + value["name"] + '</option>');
                             $("select[name='name']").append('<option value="' + value["id"] + '">' + value["name"] + '</option>');
                         });
                     }
@@ -594,6 +604,8 @@
                 method: 'get',
                 type: 'json',
                 success: function (result) {
+                    $('#forminputkinerja').hide();
+                    $('#infostatus').hide();
                     // console.log(result);
                     $("#NIP").val(result.dataUserDetail[0]['NIP']);
                     $("#jabatan").val(result.dataUserDetail[0]['jabatan']);
@@ -663,7 +675,7 @@
                     }
                     
                     $('#infostatus').show();
-                    console.log(result);
+                    // console.log(result);
 
                     $('#nilaiAkhir').val(result['nilaiAkhir']);
 
@@ -693,6 +705,13 @@
             $('#periodePenilaian option[value="Q2"]').text("Q2 " + yearChange);
             $('#periodePenilaian option[value="Q3"]').text("Q3 " + yearChange);
             $('#periodePenilaian option[value="Q4"]').text("Q4 " + yearChange);
+            $('#forminputkinerja').hide();
+            $('#infostatus').hide();
+        });
+
+        $("#periodePenilaian").change(function () {
+            $('#forminputkinerja').hide();
+            $('#infostatus').hide();
         });
 
         $('.nilaikk').change(function () {

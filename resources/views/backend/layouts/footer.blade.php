@@ -1,7 +1,7 @@
 <div class="app-footer">
     <div class="col-12 text-center rounded-top"
          style="bottom: 0; font-weight: bold;padding: 10px;">
-         Copyright ©{{date('Y')}} created by PT Alamanda Global Head
+         Copyright ©{{date('Y')}} created by PT Alamanda Global Health
     </div>
 </div>
 <script src="{{ asset('/assets/js/main.js') }}"></script>

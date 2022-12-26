@@ -4,8 +4,8 @@
     }
 </style>
 <div class="app-header" style="background:#4C6FBF;height:60px;">
-    <div class="app-header__logo" style="background:#4C6FBF">
-        <div class="logo-src" style="width:132px;height:45px"> 
+    <div class="app-header__logo" style="background:#4C6FBF;width:270px">
+        <div class="logo-src" style="width:auto;height:45px"> 
         <h5 style="color:white;text-align:left;font-weight: bold;line-height:20px;">
         <img class="rounded-circle" src="{{ asset('assets/images/users/logo.png') }}" alt="" width="50">
        PT. AGH
@@ -50,9 +50,9 @@
                                 <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
                                     <img class="rounded-circle" src="{{ asset('assets/images/users/default.png') }}"
                                          alt="" width="42">
-                                    <i class="fa fa-angle-down ml-2 opacity-8"></i>
+                                    <!-- <i class="fa fa-angle-down ml-2 opacity-8"></i> -->
                                 </a>
-                                <div tabindex="-1" role="menu" aria-hidden="true"
+                                <!-- <div tabindex="-1" role="menu" aria-hidden="true"
                                      class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="{{ URL :: to('/admin/profile') }}"> <i
                                                 class="fa fa-user fa-1x fa-fw"></i> Profile</a>
@@ -60,7 +60,7 @@
                                                 class="fa fa-lock fa-1x fa-fw"></i> Change Password</a>
                                     <a class="dropdown-item" href="{{ URL :: to('/admin_login/logout') }}"> <i
                                                 class="fa fa-sign-out-alt fa-1x fa-fw"></i> Logout</a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="widget-content-left  ml-3 header-user-info">

@@ -224,8 +224,8 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Kriteria</th>
                                 <th>Faktor</th>
+                                <th>Kriteria</th>
                                 <th>Nilai 0</th>
                                 <th>Nilai 1</th>
                                 <th>Nilai 2</th>
@@ -430,12 +430,12 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'kriteria',
-                    name: 'kriteria'
-                },
-                {
                     data: 'faktor',
                     name: 'faktor'
+                },
+                {
+                    data: 'kriteria',
+                    name: 'kriteria'
                 },
                 {
                     data: 'nilai0',

@@ -7,7 +7,7 @@
             <div class="page-title-icon">
                 <i class="pe-7s-users icon-gradient bg-mean-fruit"> </i>
             </div>
-            <div>Input Pengukuran Kinerja Karyawan</div>
+            <div>Input Data Karyawan</div>
         </div>
     </div>
 </div>

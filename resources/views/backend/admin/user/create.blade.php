@@ -139,6 +139,7 @@
                                     $('#error_' + key).html(val);
                                 });
                             }
+                            swal("Error, NIP has already been taken!", "Try again", "error");
                             $("#status").html(data.message);
                             $('#loader').hide();
                             $("#submit").prop('disabled', false); // disable button
@@ -148,6 +149,7 @@
                     }, 
                     error: function(xhr, status, error) {
                     console.log(xhr);
+                    swal("Error create user!", "Try again", "error");
                     }
                 });
             }

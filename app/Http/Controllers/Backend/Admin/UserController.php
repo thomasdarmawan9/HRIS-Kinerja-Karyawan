@@ -95,6 +95,7 @@ class UserController extends Controller
         if ($request->ajax()) {
             // Setup the validator
             $rules = [
+                'NIP' => 'required|unique:admins,NIP',
                 'name' => 'required',
                 'email' => 'required|email|unique:admins,email',
                 'password' => 'required|same:confirm-password'

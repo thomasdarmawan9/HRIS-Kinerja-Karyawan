@@ -41,6 +41,34 @@
             <input type="radio" name="status" class="flat-green"
                    value="0" {{ ( $user->status == 0 ) ? 'checked' : '' }}/> In Active
         </div>
+        <div class="form-group col-md-6">
+        <label for=""> Department </label><br/>
+        <select class="form-control" name="department_name" id="department_name">
+            <option value="">--Select Department--</option>
+            @if(!empty($department_user))
+            @foreach($department_name as $divisi => $key)
+            <option value="{{ $key->id }}" {{ $key->id == $department_user->divisi_id ? 'selected' : '' }}>{{ $key->name_division }}</option>
+            @endforeach
+            @else
+            @foreach($department_name as $divisi => $key)
+            <option value="{{ $key->id }}">{{ $key->name_division }}</option>
+            @endforeach
+            @endif
+        </select>
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for=""> Seksi </label><br/>
+        @if(!empty($department_user))
+
+        <input type="text" id="dataSeksiID" value="{{$department_user->seksi_id}}" hidden>
+
+        @endif
+        <select name="seksi" id="seksi" class="form-control">
+                <option value="" selected disabled>--Select Seksi--</option>
+        </select>
+        </div>
+    
         <div class="clearfix"></div>
         <div class="col-md-12 mb-3">
             <button type="submit" class="btn btn-success button-submit w-100"
@@ -51,6 +79,39 @@
 </form>
 <script>
     $(document).ready(function () {
+        // GET SEKSI IF HAVE DIVISION EXIST
+        var depid = $("select[name='department_name']").val();
+        var dataSeksiID = $("#dataSeksiID").val();
+            // console.log(depid);
+        var selected = "selected";
+        if(depid != ""){
+            $.ajax({
+                url: '/api/v1/getSeksiByDept/'+ depid,
+                method: 'get',
+                type: 'json',
+                success: function (result) {
+                    if(result.dataSeksi.length === 0){
+                        $("select[name='seksi']").html("<option>--Select Seksi--</option>");
+                    }else{
+                        $.each(result.dataSeksi,function(key, value)
+                        {
+                            
+                            if(value["id"] == dataSeksiID){
+                                $("select[name='seksi']").append('<option value="' + value["id"] + '" '+selected+'>' + value["seksi_name"] + '</option>');
+                            }else{
+                                $("select[name='seksi']").append('<option value="' + value["id"] + '">' + value["seksi_name"] + '</option>');
+                            }
+                            // console.log('<option value="' + value["id"] + '">' + value["seksi_name"] + '</option>');
+                            
+                        });
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                }
+        });
+        }
+            
         $('#edit').validate({// <- attach '.validate()' to your form
             // Rules for form validation
             rules: {
@@ -83,7 +144,7 @@
                         $("#submit").prop('disabled', true); // disable button
                     },
                     success: function (data) {
-
+                        // console.log(data);
                         if (data.type === 'success') {
                             reload_table();
                             notify_view(data.type, data.message);
@@ -111,6 +172,32 @@
                 });
             }
 
+        });
+
+        // GET DATA SEKSI (HR)
+        $('#department_name').change(function () {
+            var depid = $(this).val();
+            // console.log(depid);
+            $("select[name='seksi']").html("<option>--Select Seksi--</option>");
+            $.ajax({
+                url: '/api/v1/getSeksiByDept/'+ depid,
+                method: 'get',
+                type: 'json',
+                success: function (result) {
+                    if(result.dataSeksi.length === 0){
+                        $("select[name='seksi']").html("<option>--Select Seksi--</option>");
+                    }else{
+                        $.each(result.dataSeksi,function(key, value)
+                        {
+                            // console.log('<option value="' + value["id"] + '">' + value["seksi_name"] + '</option>');
+                            $("select[name='seksi']").append('<option value="' + value["id"] + '">' + value["seksi_name"] + '</option>');
+                        });
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                }
+            });
         });
 
     });

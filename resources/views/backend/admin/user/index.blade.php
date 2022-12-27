@@ -132,10 +132,15 @@
                 url: 'users/' + id + '/edit',
                 type: 'get',
                 success: function (data) {
+                    console.log(data);
                     $("#modal_data").html(data.html);
                     $('#myModal').modal('show'); // show bootstrap modal
+                    // $.each(data.department_name, function(index, data ){
+                    //     $("#department_name").append('<option value="' + index + '">' + data  + '</option>');
+                    // });
                 },
                 error: function (result) {
+                    console.log(result);
                     $("#modal_data").html("Sorry Cannot Load Data");
                 }
             });

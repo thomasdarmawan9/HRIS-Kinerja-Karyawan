@@ -1,21 +1,24 @@
 <style>
-    .hamburger.is-active .hamburger-inner, .hamburger.is-active .hamburger-inner::before, .hamburger.is-active .hamburger-inner::after {
-        background-color:white;
+    .hamburger.is-active .hamburger-inner,
+    .hamburger.is-active .hamburger-inner::before,
+    .hamburger.is-active .hamburger-inner::after {
+        background-color: white;
     }
 
     /* .pkk:hover{
         height:80px;
     } */
+
 </style>
 <div class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
         <div class="header__pane ml-auto">
             <div>
                 <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
-                        data-class="closed-sidebar">
-                                    <span class="hamburger-box">
-                                        <span class="hamburger-inner"></span>
-                                    </span>
+                    data-class="closed-sidebar">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
                 </button>
             </div>
         </div>
@@ -23,21 +26,20 @@
     <div class="app-header__mobile-menu">
         <div>
             <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
-                                <span class="hamburger-box">
-                                    <span class="hamburger-inner"></span>
-                                </span>
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
             </button>
         </div>
     </div>
     <div class="app-header__menu">
-                        <span>
-                            <button type="button"
-                                    class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
-                                <span class="btn-icon-wrapper">
-                                    <i class="fa fa-ellipsis-v fa-w-6"></i>
-                                </span>
-                            </button>
-                        </span>
+        <span>
+            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                <span class="btn-icon-wrapper">
+                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                </span>
+            </button>
+        </span>
     </div>
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner pt-4">
@@ -48,13 +50,16 @@
                         Dashboard
                     </a>
                 </li>
+                @if(Auth::user()->role->model_type != "Karyawan")
                 <li style="height:55px">
-               
-                            <a href="{{ URL :: to('/admin/kinerja') }}" class="pkk" style=" height:80px;"> <i class="metismenu-icon pe-7s-upload" style="top:25%;"></i>
-                           <span>Pengukuran Kinerja<br>Karyawan</span>
-                            </a>
-                        </li>
-                        <br>
+                    <a href="{{ URL :: to('/admin/kinerja') }}" class="pkk" style=" height:80px;"> <i
+                            class="metismenu-icon pe-7s-upload" style="top:25%;"></i>
+                        <span>Pengukuran Kinerja<br>Karyawan</span>
+                    </a>
+                </li>
+            
+                <br>
+                @endif
                 <li>
                     <a href="#">
                         <i class="metismenu-icon pe-7s-menu"></i>
@@ -62,11 +67,14 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                     <ul>
+
+                        @if(Auth::user()->role->model_type != "Karyawan")
                         <li class="treeview">
                             <a href="{{ URL :: to('/admin/laporanPKK') }}">
                                 <i class="metismenu-icon"></i><span> Laporan PKK Karyawan</span>
                             </a>
                         </li>
+                        @endif
                         <li class="treeview">
                             <a href="{{ URL :: to('/admin/laporanPKKPribadi') }}">
                                 <i class="metismenu-icon"></i><span> Laporan PKK Pribadi</span>
@@ -74,6 +82,7 @@
                         </li>
                     </ul>
                 </li>
+                @if(Auth::user()->role->model_type == "HR")
                 <li>
                     <a href="#">
                         <i class="metismenu-icon pe-7s-diamond"></i>
@@ -81,12 +90,12 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                     <ul>
-                    <li>
-                        <a href="{{ URL :: to('/admin/users') }}">
-                            <i class="metismenu-icon pe-7s-users"></i>
-                            Users
-                        </a>
-                    </li>
+                        <li>
+                            <a href="{{ URL :: to('/admin/users') }}">
+                                <i class="metismenu-icon pe-7s-users"></i>
+                                Users
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ URL :: to('/admin/roles') }}">
                                 <i class="metismenu-icon"></i>
@@ -101,6 +110,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
                 <li>
                     <a href="{{ URL :: to('/logout') }}">
                         <i class="metismenu-icon pe-7s-upload"></i>
@@ -122,4 +132,5 @@
             }
         });
     });
+
 </script>

@@ -34,4 +34,9 @@ class Admin extends Authenticatable
    protected $casts = [
      'email_verified_at' => 'datetime',
    ];
+   
+   public function Role()
+   {
+      return $this->hasOne('App\Models\Model_has_role','model_id');
+   }
 }

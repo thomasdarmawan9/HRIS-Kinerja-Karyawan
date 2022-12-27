@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use Auth;
 use App\Models\Role;
 use App\Models\Admin;
+use App\Models\Divisi as Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $department_name = DB::table('divisi')->select('name_division','id')->get();
+        // dd($department_name );
         return view('backend.admin.user.index');
     }
 
@@ -180,14 +183,11 @@ class UserController extends Controller
     public function edit($id, Request $request)
     {
         if ($request->ajax()) {
-            $haspermision = Auth::guard('admin');
-            if ($haspermision) {
-                $user = Admin::findOrFail($id);
-                $view = View::make('backend.admin.user.edit', compact('user'))->render();
-                return response()->json(['html' => $view]);
-            } else {
-                abort(403, 'Sorry, you are not authorized to access the page');
-            }
+            $department_name = DB::table('divisi')->select('name_division','id')->get();
+            $department_user = DB::table('user_has_seksi')->select('divisi_id','seksi_id')->where('user_id',$id)->first();
+            $user = Admin::findOrFail($id);
+            $view = View::make('backend.admin.user.edit', compact('user','department_name','department_user'))->render();
+            return response()->json(['html' => $view,'department_name'=>$department_name]);
         } else {
             return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);
         }
@@ -231,8 +231,18 @@ class UserController extends Controller
                     $admin->password = Hash::make($request->password);
                     $admin->save();
 
-                    DB::commit();
-                    return response()->json(['type' => 'success', 'message' => "Successfully Updated"]);
+                    if($request->input('department_name') != "" && $request->input('seksi') != ""){
+                            
+                        DB::insert('INSERT INTO user_has_seksi (user_id, seksi_id, divisi_id) values (?, ?, ?)', [$request->input('id'), $request->input('seksi'), $request->input('department_name') ]);
+
+                        DB::commit();
+
+                        return response()->json(['type' => 'success', 'message' => "Successfully Created"]);
+                    }else{
+                        DB::commit();
+                        return response()->json(['type' => 'success', 'message' => "Successfully Updated"]);
+                    }
+                   
 
                 } catch (\Exception $e) {
                     DB::rollback();

@@ -30,17 +30,8 @@ class UserController extends Controller
     public function getAll()
     {
         $can_edit = $can_delete = '';
-        // if (!auth()->user()->can('user-edit')) {
-        //     $can_edit = "style='display:none;'";
-        // }
-        // if (!auth()->user()->can('user-delete')) {
-        //     $can_delete = "style='display:none;'";
-        // }
         $users = Admin::all();
         return Datatables::of($users)
-            // ->addColumn('file_path', function ($users) {
-            //     return "<img src='" . asset($users->file_path) . "' class='img-thumbnail' width='50px'>";
-            // })
             ->addColumn('status', function ($users) {
                 return $users->status ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>';
             })

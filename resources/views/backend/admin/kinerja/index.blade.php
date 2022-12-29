@@ -75,11 +75,11 @@
                                     <label for="departemen">Departement :</label>
                                 </div>
                                 <div class="col-8" style="padding-left:5px;">
-                                        @if($userRole == "HR")
+                                        @if(Auth::user()->role->model_type == "HR")
                                             {{ Form::select('departmentList', $departmentList, NULL, ['id' => 'department', 'class' => 'form-control','style' => 'font-size:12px','placeholder' => '--Select Department--', 'style'=>'font-size:12px']) }}
                                         @else
 
-                                        <input type="text" class="form-control" id="departement" name="departement" style="font-size:12px" value="{{ $department && $department[0]->name_division ? $department[0]->name_division: '' }}" placeholder="departemen">
+                                        <input type="text" class="form-control" id="departement" name="departement" disabled style="font-size:12px" value="{{ $department && $department[0]->name_division ? $department[0]->name_division: '' }}" data-id="{{ $department && $department[0]->divisi_id ? $department[0]->divisi_id: '' }}" placeholder="departemen">
                                         
                                         @endif
                                         
@@ -93,12 +93,12 @@
                                     <label for="seksi">Seksi :</label>
                                 </div>
                                 <div class="col-9" style="padding-left:5px;">
-                                @if($userRole == "HR")
+                                @if(Auth::user()->role->model_type == "HR")
                                     <select name="seksi" id="seksi" class="form-control" style="font-size:12px">
                                         <option value="" selected disabled>--Select Seksi--</option>
                                     </select>
                                 @else
-                                    <input type="text" class="form-control" id="seksi" name="seksi" style="font-size:12px" value="{{ $department && $department[0]->seksi_name ? $department[0]->seksi_name: '' }}" placeholder="seksi">
+                                    <input type="text" class="form-control" id="seksi" name="seksi" style="font-size:12px" disabled value="{{ $department && $department[0]->seksi_name ? $department[0]->seksi_name: '' }}" placeholder="seksi">
                                 @endif
                                     <!-- <select name="provinsi" id="seksi" class="form-control">
                                         @foreach ($seksiList as $listSeksi)
@@ -124,11 +124,11 @@
                                     <label for="nama">Nama :</label>
                                 </div>
                                 <div class="col-9" style="padding-left:5px;">
-                                @if($userRole == "HR")
+                                @if(Auth::user()->role->model_type == "HR")
                                     <select name="name" id="name" class="form-control" style="font-size:12px">
                                         <option value="" selected disabled>--Select User--</option>
                                     </select>
-                                @else
+                                @elseif(Auth::user()->role->model_type == "Atasan Langsung")
                                     <select name="name" id="name" class="form-control" style="font-size:12px">
                                         @foreach ($dataUser as $listUser)
                                         <option value="{{$listUser['id']}}"
@@ -137,9 +137,9 @@
                                         </option>
                                         @endforeach
                                     </select>
+                                @else
+                                    <input type="text" class="form-control" id="name" name="nama" disabled style="font-size:12px" value="{{$namaUser}}" data-id="{{$usersID}}" placeholder="nama">
                                 @endif
-                                  
-                                    <!-- <input type="text" class="form-control" id="nama" name="nama" value="{{$namaUser}}" placeholder="nama"> -->
                                 </div>
                             </div>
                         </div>
@@ -249,7 +249,8 @@
     
         Evaluasi Kinerja
   </div>
-            <div class="card-body">
+
+            <div class="card-body card-penilaian">
                 <nav>
                     <div class="nav nav-tabs row" id="nav-tab" role="tablist">
                         <a class="col-3 nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
@@ -541,8 +542,8 @@
             $("#jabatan").val("");
             $('#forminputkinerja').hide();
             $('#infostatus').hide();
-            $("select[name='seksi']").html("<option>--Select Seksi--</option>");
-            $("select[name='name']").html("<option>--Select User--</option>");
+            $("select[name='seksi']").html("<option selected disabled>--Select Seksi--</option>");
+            $("select[name='name']").html("<option selected disabled>--Select User--</option>");
             $.ajax({
                 url: '/api/v1/getSeksiByDept/'+ depid,
                 method: 'get',
@@ -551,8 +552,8 @@
                     console.log(result.dataSeksi);
                     $("input[name='namaAtasan']").val(result.leaderDept[0]['leader_team_name']);
                     if(result.dataSeksi.length === 0){
-                        $("select[name='seksi']").html("<option>--Select Seksi--</option>");
-                        $("select[name='name']").html("<option>--Select User--</option>");
+                        $("select[name='seksi']").html("<option selected disabled >--Select Seksi--</option>");
+                        $("select[name='name']").html("<option selected disabled>--Select User--</option>");
                     }else{
                         $.each(result.dataSeksi,function(key, value)
                         {
@@ -574,7 +575,7 @@
             $("#jabatan").val("");
             $('#forminputkinerja').hide();
             $('#infostatus').hide();
-            $("select[name='name']").html("<option>--Select User--</option>");
+            $("select[name='name']").html("<option selected disabled>--Select User--</option>");
             $.ajax({
                 url: '/api/v1/getUserBySeksi/'+ seksiid,
                 method: 'get',
@@ -582,10 +583,11 @@
                 success: function (result) {
                     // console.log(result.dataUser);
                     if(result.dataUser.length === 0){
-                        $("select[name='name']").html("<option>--Select User--</option>");
+                        $("select[name='name']").html("<option selected disabled>--Select User--</option>");
                     }else{
                         $.each(result.dataUser,function(key, value)
                         {
+                            console.log(result["name"]);
                             $("select[name='name']").append('<option value="' + value["id"] + '">' + value["name"] + '</option>');
                         });
                     }
@@ -615,10 +617,46 @@
                 }
             });
         });
+      
+        @if(Auth::user()->role->model_type == "Karyawan")
+            // HIT API NAMA ATASAN
+            var depid = $("#departement").attr("data-id");
+            console.log(depid);
+            $.ajax({
+                url: '/api/v1/getSeksiByDept/'+ depid,
+                method: 'get',
+                type: 'json',
+                success: function (result) {
+                   
+                    $("input[name='namaAtasan']").val(result.leaderDept[0]['leader_team_name']);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                }
+            });
+
+              // HIT API USER DEtAIL FOR KARYAWAN
+            var userid = $("#name").attr("data-id");
+            $.ajax({
+                url: '/api/v1/getUserDetail/'+ userid,
+                method: 'get',
+                type: 'json',
+                success: function (result) {
+                    $('#forminputkinerja').hide();
+                    $('#infostatus').hide();
+                    console.log(result);
+                    $("#NIP").val(result.dataUserDetail[0]['NIP']);
+                    $("#jabatan").val(result.dataUserDetail[0]['jabatan']);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr);
+                }
+            });
+        @endif
 
         // FUNCION LOGIC RELOAD STATUS
         function reloadStatus(result){
-            if(result['SK'] == "close" && result['SD'] == "close" && result['SA'] == "close"){
+                    if(result['SK'] == "close" && result['SD'] == "close" && result['SA'] == "close"){
                         $("#nav-nilai-akhir").removeClass('disabled');
                         $('#na-close').text(result['nilaiAkhir']);
 
@@ -636,6 +674,16 @@
                     }
 
                     $('#forminputkinerja').show();
+
+                    if("{!! Auth::user()->name !!}" == $("#name").val()){
+                        if(result['SK'] == "open" && result['SD'] == "open" && result['SA'] == "open"){
+                            $(".card-penilaian").html("<div class='row'>\
+                            <div class='col-12 text-center'>\
+                            <h4>Data Penilaian Tahun "+$('#year').val()+" Periode "+$('#periodePenilaian').val()+" Belum Tersedia</h4>\
+                            </div>\
+                            </div>");
+                        }
+                    }
 
                     if(result['SK'] == "open"){
                         $(".SK").removeClass('btn-success');
@@ -664,7 +712,12 @@
         
         // CHECK DATA FIRST
         $("#check").click(function(event){
+            @if(Auth::user()->role->model_type == "HR" || Auth::user()->role->model_type == "Atasan Langsung")
             var user_ternilai = $("#name").val();
+            @elseif(Auth::user()->role->model_type == "Karyawan")
+            var user_ternilai = $("#name").data("id");
+            @endif
+          
             var periodePenilaian = $("#periodePenilaian").val();
             var year = $("#year").val();
             var periode = periodePenilaian + year ;

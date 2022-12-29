@@ -4,11 +4,6 @@
     .hamburger.is-active .hamburger-inner::after {
         background-color: white;
     }
-
-    /* .pkk:hover{
-        height:80px;
-    } */
-
 </style>
 <div class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
@@ -50,7 +45,7 @@
                         Dashboard
                     </a>
                 </li>
-                @if(Auth::user()->role->model_type != "Karyawan")
+
                 <li style="height:55px">
                     <a href="{{ URL :: to('/admin/kinerja') }}" class="pkk" style=" height:80px;"> <i
                             class="metismenu-icon pe-7s-upload" style="top:25%;"></i>
@@ -59,7 +54,7 @@
                 </li>
             
                 <br>
-                @endif
+                
                 <li>
                     <a href="#">
                         <i class="metismenu-icon pe-7s-menu"></i>

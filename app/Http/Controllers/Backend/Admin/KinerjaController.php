@@ -28,22 +28,19 @@ class KinerjaController extends Controller
     */
 
    public function index(Request $request)
-   {
-
-      // $checkStatus = Status::Where("form_id", "pkk001")->first();
-      
+   {  
       //USERS DATA FOR FILTER
       $namaUser = Auth::user()->name;
       $NIP = Auth::user()->NIP;
       $jabatan = Auth::user()->jabatan;
       $usersid = Auth::user()->id;
 
-      $userLoginRole = DB::select('SELECT roles.name as roleName FROM model_has_roles 
-      JOIN `roles` ON model_has_roles.role_id = roles.id
-      JOIN `admins` ON model_has_roles.model_id = admins.id
-      WHERE model_id =' . $usersid);
+      // $userLoginRole = DB::select('SELECT roles.name as roleName FROM model_has_roles 
+      // JOIN `roles` ON model_has_roles.role_id = roles.id
+      // JOIN `admins` ON model_has_roles.model_id = admins.id
+      // WHERE model_id =' . $usersid);
 
-      $department = DB::select("SELECT admins.id, admins.NIP, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
+      $department = DB::select("SELECT admins.id, admins.NIP, admins.name, seksi_has_divisi.seksi_name, divisi.id as divisi_id, divisi.name_division, divisi.leader_team_name as leader_name
       FROM `user_has_seksi` LEFT JOIN `admins` ON admins.id = user_has_seksi.user_id 
       JOIN `seksi_has_divisi` ON seksi_has_divisi.id = user_has_seksi.seksi_id 
       JOIN `divisi` ON divisi.id = seksi_has_divisi.divisi_id WHERE admins.id =  " . $usersid );
@@ -56,7 +53,7 @@ class KinerjaController extends Controller
       $disiplin = Penilaian::Where("kriteria","Disiplin")->get();
       $attitude = Penilaian::Where("kriteria","Attitude")->get();
       
-      if($userLoginRole[0]->roleName == "HR"){
+      if(Auth::user()->role->model_type == "HR"){
          // $dataUser = []; 
          $dataUsers = DB::select("SELECT admins.id, admins.NIP,admins.jabatan, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
          FROM `user_has_seksi` JOIN `admins` ON admins.id = user_has_seksi.user_id 
@@ -72,7 +69,7 @@ class KinerjaController extends Controller
             $dataUser[] = $listUserfix;
          }
          // dd($dataUser);
-      }else if($userLoginRole[0]->roleName == "Atasan Langsung"){
+      }else if(Auth::user()->role->model_type == "Atasan Langsung"){
          $dataUsers = DB::select("SELECT admins.id, admins.NIP,admins.jabatan, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
          FROM `user_has_seksi` LEFT JOIN `admins` ON admins.id = user_has_seksi.user_id 
          JOIN `seksi_has_divisi` ON seksi_has_divisi.id = user_has_seksi.seksi_id 
@@ -102,7 +99,7 @@ class KinerjaController extends Controller
 
       // dd($penilai);
 
-      return view('backend.admin.kinerja.index', ['usersID'=>$usersid,'userRole'=>$userLoginRole[0]->roleName ,'namaUser' => $namaUser,'NIP' => $NIP,'jabatan'=> $jabatan, 
+      return view('backend.admin.kinerja.index', ['usersID'=>$usersid,'namaUser' => $namaUser,'NIP' => $NIP,'jabatan'=> $jabatan, 
       'department'=>$department,'departmentList'=>$departmentList,'seksiList'=>$seksiList,'dataUser'=>$dataUser,'kemampuanKerja'=>$kemampuanKerja,'disiplin'=>$disiplin,'attitude'=>$attitude]);
    }
 

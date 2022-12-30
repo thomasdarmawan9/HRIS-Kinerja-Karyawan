@@ -39,9 +39,12 @@ class LaporanpkkController extends Controller
         if ($request->ajax()) {
             $LaporanpkkAtasanLangsung = 
             DB::table('status_nilai_karyawan')->select('status_nilai_karyawan.id as id','status_nilai_karyawan.form_id as pkk_number','status_nilai_karyawan.nilai_akhir as nilai_akhir',
-            'nilai_karyawan.tahun as tahun','nilai_karyawan.periode as periode','nilai_karyawan.user_id_ternilai as user_id','admins.name as nama_karyawan')->where('nilai_karyawan.user_id_penilai',Auth::user()->id)
+            'nilai_karyawan.tahun as tahun','nilai_karyawan.periode as periode','nilai_karyawan.user_id_ternilai as user_id','admins.name as nama_karyawan','admins.jabatan as jabatan','seksi_has_divisi.seksi_name as seksi','divisi.name_division as divisi')->where('nilai_karyawan.user_id_penilai',Auth::user()->id)
             ->join('nilai_karyawan', 'nilai_karyawan.form_id', '=', 'status_nilai_karyawan.form_id')
-            ->join('admins','admins.id','=','nilai_karyawan.user_id_ternilai')->get();
+            ->join('admins','admins.id','=','nilai_karyawan.user_id_ternilai')
+            ->join('user_has_seksi', 'user_has_seksi.user_id', '=', 'admins.id')
+            ->join('divisi', 'divisi.id', '=', 'user_has_seksi.divisi_id')
+            ->join('seksi_has_divisi', 'seksi_has_divisi.id', '=', 'user_has_seksi.seksi_id')->get();
 
             $laporanpkkAL = $LaporanpkkAtasanLangsung->unique();
             

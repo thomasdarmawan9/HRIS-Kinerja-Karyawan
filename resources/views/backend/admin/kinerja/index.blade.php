@@ -722,6 +722,29 @@
                                 $(".card-penilaian-kosong").show()
                             }
                         }
+                    }else if("{!! Auth::user()->role->model_type !!}" == "HR"){
+                        if("{!! Auth::user()->id !!}" == $("#name").val()){
+                            $("#kemampuankerja").hide();
+                            $("#disiplin").hide();
+                            $("#btnattitude").hide();
+                            if(result['SK'] == "open" || result['SD'] == "open" || result['SA'] == "open"){
+                                $(".card-penilaian").hide();
+                                $(".card-penilaian-kosong").show()
+                            }
+                        }
+
+                        if("{!! $department[0]->name_division !!}" == $("#department option:selected").text()){
+                            $("#nav-home-tab").removeClass('disabled');
+                            $("#nav-home-tab").addClass('active');
+                            $("#nav-attitude").removeClass('disabled');
+                            $("#nav-profile-tab").removeClass('active');
+
+                        }else{
+                            $("#nav-home-tab").addClass('disabled');
+                            $("#nav-home-tab").removeClass('active');
+                            $("#nav-attitude").addClass('disabled');
+                            $("#nav-profile-tab").addClass('active');
+                        }
                     }
 
                     if(result['SK'] == "open"){

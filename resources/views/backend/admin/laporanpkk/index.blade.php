@@ -28,6 +28,9 @@
                                 <th>#</th>
                                 <th>PKK Number</th>
                                 <th>Nama Karyawan</th>
+                                <th>Jabatan</th>
+                                <th>Divisi</th>
+                                <th>Seksi</th>
                                 <th>Tahun</th>
                                 <th>Periode</th>
                                 <th>Nilai Akhir</th>
@@ -61,6 +64,9 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'pkk_number', name: 'pkk_number'},
                     {data: 'nama_karyawan', name: 'nama_karyawan'},
+                    {data: 'jabatan', name: 'jabatan'},
+                    {data: 'divisi', name: 'divisi'},
+                    {data: 'seksi', name: 'seksi'},
                     {data: 'tahun', name: 'tahun'},
                     {data: 'periode', name: 'periode'},
                     {data: 'nilai_akhir', name: 'nilai_akhir'},

@@ -70,18 +70,22 @@ class KinerjaController extends Controller
          }
          // dd($dataUser);
       }else if(Auth::user()->role->model_type == "Atasan Langsung"){
+         $divisi = $department[0]->name_division;
+         // dd($divisi);
          $dataUsers = DB::select("SELECT admins.id, admins.NIP,admins.jabatan, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
          FROM `user_has_seksi` LEFT JOIN `admins` ON admins.id = user_has_seksi.user_id 
          JOIN `seksi_has_divisi` ON seksi_has_divisi.id = user_has_seksi.seksi_id 
-         JOIN `divisi` ON divisi.id = seksi_has_divisi.divisi_id
-         WHERE divisi.name_division ='$department[0]->name_division'
-         AND WHERE admins.id != ". $usersid);
+         JOIN `divisi` ON divisi.id = seksi_has_divisi.divisi_id 
+         WHERE divisi.name_division = '$divisi'");
 
          foreach($dataUsers as $listUser){
-            $listUserfix['id'] = $listUser->name;
+            $listUserfix['id'] = $listUser->id;
             $listUserfix['name'] = $listUser->name;
             $dataUser[] = $listUserfix;
          }
+
+         // dd($dataUser);
+
       }else{
          $dataUsers = DB::select("SELECT admins.id, admins.NIP,admins.jabatan, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
          FROM `user_has_seksi` JOIN `admins` ON admins.id = user_has_seksi.user_id 
@@ -371,11 +375,17 @@ class KinerjaController extends Controller
            $status_dokumen_all = Status::all(); 
            $generatePKK = $status_dokumen_all->count()+1;
            $statusNew = "open";
-           return response()->json(['type' => 'success', 'message' => "Successfully Created", 'pkk_number' => $generatePKK,
+           return response()->json(['type' => 'success', 'message' => "GetNewForm", 'pkk_number' => $generatePKK,
            'SK' => $statusNew, 'SD' => $statusNew,'SA' => $statusNew]);
         }else{
+            $pkknumber = $status_dokumen_user[0]->form_id;
+
+            $kk = DB::select("SELECT kfp.id, kfp.kriteria, kfp.bobot, nilai_karyawan.nilai, nilai_karyawan.jumlah FROM kriteria_faktor_penilaian as kfp
+            JOIN nilai_karyawan ON nilai_karyawan.faktor_id = kfp.id
+            WHERE nilai_karyawan.user_id_ternilai = $userid
+            AND nilai_karyawan.form_id = '$pkknumber'");
             // $status_form = DB::select("SELECT status_kemampuan_kerja, status_disiplin, status_attitude FROM status_nilai_karyawan");
-           return response()->json(['type' => 'success', 'message' => "Successfully Created", 'pkk_number' => $status_dokumen_user[0]->form_id,
+           return response()->json(['type' => 'success', 'message' => "Successfully Get Data", 'dataForm'=> $kk, 'pkk_number' => $status_dokumen_user[0]->form_id,
            'SK' => $status_dokumen_user[0]->sk, 'SD' => $status_dokumen_user[0]->sd,'SA' => $status_dokumen_user[0]->sa, 'nilaiAkhir' => $status_dokumen_user[0]->nilai_akhir]);
         }
      

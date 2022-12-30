@@ -130,9 +130,10 @@
                                     </select>
                                 @elseif(Auth::user()->role->model_type == "Atasan Langsung")
                                     <select name="name" id="name" class="form-control" style="font-size:12px">
+                                    <option value="" selected disabled>--Select User--</option>
                                         @foreach ($dataUser as $listUser)
-                                        <option value="{{$listUser['id']}}"
-                                            {{($namaUser == $listUser['name']) ? 'hidden' : ''}}>
+                                        <option value="{{$listUser['id']}}" data-id="{{$listUser['id']}}"
+                                            {{($namaUser == $listUser['name']) ? 'selected' : ''}}>
                                             {{$listUser['name']}}
                                         </option>
                                         @endforeach
@@ -214,7 +215,7 @@
             <div class="card-body">
                 <div class="d-inline-block mb-4">
 
-                    <button class="btn btn-primary" onclick="createFaktor()"><i class="glyphicon glyphicon-plus"></i>
+                    <button class="btn btn-primary fnk" style="display:none" onclick="createFaktor()"><i class="glyphicon glyphicon-plus"></i>
                         Tambah Faktor & Kriteria
                     </button>
 
@@ -231,7 +232,7 @@
                                 <th>Nilai 2</th>
                                 <th>Nilai 4</th>
                                 <th>Nilai 5</th>
-                                <th>Action</th>
+                                <th class="action">Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -249,14 +250,20 @@
     
         Evaluasi Kinerja
   </div>
-
+            <div class="card-body card-penilaian-kosong" style="display:none">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h4>Belum ada data penilaian</h4>
+                    </div>
+                </div>
+            </div>
             <div class="card-body card-penilaian">
                 <nav>
                     <div class="nav nav-tabs row" id="nav-tab" role="tablist">
                         <a class="col-3 nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
                             role="tab" aria-controls="nav-home" aria-selected="true">Kemampuan Kerja</a>
                         <a class="col-3 nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                            role="tab" aria-controls="nav-profile" aria-selected="false">Displin</a>
+                            role="tab" aria-controls="nav-profile" aria-selected="false">Disiplin</a>
                         <a class="col-3 nav-item nav-link" id="nav-attitude" data-toggle="tab" href="#navattitude"
                             role="tab" aria-controls="nav-attitude" aria-selected="false">Attitude</a>
                         <a class="col-3 nav-item nav-link" id="nav-nilai-akhir" data-toggle="tab" href="#nav-contact"
@@ -465,7 +472,8 @@
                 },
                 {
                     data: 'action',
-                    name: 'action'
+                    name: 'action',
+                    className:'action'
                 }
             ],
             "autoWidth": false,
@@ -517,7 +525,7 @@
                 $('#myModal').modal('show'); // show bootstrap modal
             },
             error: function (result) {
-                console.log(result);
+                // console.log(result);
                 $("#modal_data").html("Sorry Cannot Load Data");
             }
         });
@@ -549,7 +557,7 @@
                 method: 'get',
                 type: 'json',
                 success: function (result) {
-                    console.log(result.dataSeksi);
+                    // console.log(result.dataSeksi);
                     $("input[name='namaAtasan']").val(result.leaderDept[0]['leader_team_name']);
                     if(result.dataSeksi.length === 0){
                         $("select[name='seksi']").html("<option selected disabled >--Select Seksi--</option>");
@@ -587,7 +595,7 @@
                     }else{
                         $.each(result.dataUser,function(key, value)
                         {
-                            console.log(result["name"]);
+                            // console.log(result["name"]);
                             $("select[name='name']").append('<option value="' + value["id"] + '">' + value["name"] + '</option>');
                         });
                     }
@@ -618,10 +626,13 @@
             });
         });
       
-        @if(Auth::user()->role->model_type == "Karyawan")
+        @if(Auth::user()->role->model_type == "Karyawan" || Auth::user()->role->model_type == "Atasan Langsung")
+            var table = $('#manage_all').DataTable();
+
+            table.column( 8 ).visible( false );
             // HIT API NAMA ATASAN
             var depid = $("#departement").attr("data-id");
-            console.log(depid);
+            // console.log(depid);
             $.ajax({
                 url: '/api/v1/getSeksiByDept/'+ depid,
                 method: 'get',
@@ -636,7 +647,12 @@
             });
 
               // HIT API USER DEtAIL FOR KARYAWAN
+            @if(Auth::user()->role->model_type == "Karyawan")
             var userid = $("#name").attr("data-id");
+            @elseif(Auth::user()->role->model_type == "Atasan Langsung")
+            var userid = $("#name").find(':selected').data('id');
+            @endif
+
             $.ajax({
                 url: '/api/v1/getUserDetail/'+ userid,
                 method: 'get',
@@ -644,7 +660,7 @@
                 success: function (result) {
                     $('#forminputkinerja').hide();
                     $('#infostatus').hide();
-                    console.log(result);
+                    // console.log(result);
                     $("#NIP").val(result.dataUserDetail[0]['NIP']);
                     $("#jabatan").val(result.dataUserDetail[0]['jabatan']);
                 },
@@ -652,10 +668,16 @@
                     console.log(xhr);
                 }
             });
+
+        @else
+
+        $(".fnk").show();
+        
         @endif
 
         // FUNCION LOGIC RELOAD STATUS
         function reloadStatus(result){
+                           
                     if(result['SK'] == "close" && result['SD'] == "close" && result['SA'] == "close"){
                         $("#nav-nilai-akhir").removeClass('disabled');
                         $('#na-close').text(result['nilaiAkhir']);
@@ -673,15 +695,32 @@
                         $("#nav-nilai-akhir").addClass('disabled');
                     }
 
-                    $('#forminputkinerja').show();
-
-                    if("{!! Auth::user()->name !!}" == $("#name").val()){
-                        if(result['SK'] == "open" && result['SD'] == "open" && result['SA'] == "open"){
-                            $(".card-penilaian").html("<div class='row'>\
-                            <div class='col-12 text-center'>\
-                            <h4>Data Penilaian Tahun "+$('#year').val()+" Periode "+$('#periodePenilaian').val()+" Belum Tersedia</h4>\
-                            </div>\
-                            </div>");
+                    if("{!! Auth::user()->role->model_type !!}" == "Atasan Langsung"){
+                        if("{!! Auth::user()->id !!}" == $("#name").val()){
+                            $("#kemampuankerja").hide();
+                            $("#disiplin").hide();
+                            $("#btnattitude").hide();
+                            if(result['SK'] == "open" || result['SD'] == "open" || result['SA'] == "open"){
+                                $(".card-penilaian").hide();
+                                $(".card-penilaian-kosong").show()
+                            }
+                        }else{
+                        
+                                $("#nav-profile-tab").addClass("disabled");
+                            
+                        }
+                    }else if("{!! Auth::user()->role->model_type !!}" == "Karyawan"){
+                        if("{!! Auth::user()->name !!}" == $("#name").val()){
+                            $(".nilaikk").prop("disabled", true);
+                            $(".nilaidisiplin").prop("disabled", true);
+                            $(".nilaiattitude").prop("disabled", true);
+                            $("#kemampuankerja").hide();
+                            $("#disiplin").hide();
+                            $("#btnattitude").hide();
+                            if(result['SK'] == "open" || result['SD'] == "open" || result['SA'] == "open"){
+                                $(".card-penilaian").hide();
+                                $(".card-penilaian-kosong").show()
+                            }
                         }
                     }
 
@@ -728,12 +767,50 @@
                 method: 'get',
                 type: 'json',
                 success: function (result) {
-                    // console.log("sukses check status data");
-                    // console.log(result);
-                    reloadStatus(result);
-                    
                     $('#infostatus').show();
-                    // console.log(result);
+                    $('#forminputkinerja').show();
+                    $(".card-penilaian-kosong").hide()
+                    $(".card-penilaian").show();
+
+                    reloadStatus(result);
+                    // console.log(result['dataForm'][0]['kriteria']);
+                    if(result['message'] != "GetNewForm"){
+                        $.each(result.dataForm, function(index, result ){
+                            
+                            if(result.kriteria == "Kemampuan Kerja"){
+                                
+                                // console.log(result);
+                                if($("#nilai-"+result.id).data("id") == result.id){
+                                    $("#nilai-"+result.id).val(result.nilai)
+                                    $("#jumlahkk-"+result.id).val(result.jumlah)
+                                }
+                            }
+                            if(result.kriteria == "Disiplin"){
+                                // console.log(result);
+                                if($("#nilaidisiplin-"+result.id).data("id") == result.id){
+                                    $("#nilaidisiplin-"+result.id).val(result.nilai)
+                                    $("#jumlahdisiplin-"+result.id).val(result.jumlah)
+                                }
+                            }
+                            if(result.kriteria == "Attitude"){
+                                // console.log(result);
+                                if($("#nilaiattitude-"+result.id).data("id") == result.id){
+                                    $("#nilaiattitude-"+result.id).val(result.nilai)
+                                    $("#jumlahattitude-"+result.id).val(result.jumlah)
+                                }
+                            }
+                        });
+                    }else{
+                        $('.nilaikk').val("");
+                        $('.jumlahkk').val("");
+                        $('.nilaidisiplin').val("");
+                        $('.jumlahdisiplin').val("");
+                        $('.nilaiattitude').val("");
+                        $('.jumlahattitude').val("");
+                        // console.log("here");
+                    }
+                   
+                    // if(result['dataForm']['kriteria'] == "")
 
                     $('#nilaiAkhir').val(result['nilaiAkhir']);
 
@@ -881,8 +958,8 @@
                         method: 'post',
                         type: 'json',
                         success: function (result) {
-                            console.log("sukses post kemampuan kerja");
-                            console.log(result);
+                            // console.log("sukses post kemampuan kerja");
+                            // console.log(result);
                             swal({
                                 title: "Done!", 
                                 text: "Successfully submit", 
@@ -981,8 +1058,8 @@
                             method: 'post',
                             type: 'json',
                             success: function (result) {
-                                console.log("sukses post disiplin");
-                                console.log(result);
+                                // console.log("sukses post disiplin");
+                                // console.log(result);
                                 swal({
                                     title: "Done!", 
                                     text: "Successfully submit", 
@@ -1082,7 +1159,7 @@
                             method: 'post',
                             type: 'json',
                             success: function (result) {
-                                console.log("sukses post attitude");
+                                // console.log("sukses post attitude");
                                 swal({
                                     title: "Done!", 
                                     text: "Successfully submit", 

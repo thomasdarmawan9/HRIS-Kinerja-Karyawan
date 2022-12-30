@@ -5,8 +5,12 @@
         <div id="status"></div>
         <div class="form-group col-md-12 col-sm-12">
             <label for=""> Kriteria </label>
-            <input type="text" class="form-control" id="kriteria" name="kriteria" value=""
-                   placeholder="" required>
+            <select  id="kriteria" name="kriteria" class="form-control" >
+                <option selected value="" disabled>--Select Kriteria--</option>
+                <option value="Kemampuan Kerja">Kemampuan Kerja</option>
+                <option value="Disiplin">Disiplin</option>
+                <option value="Attitude">Attitude</option>
+            </select>
             <span id="error_title" class="has-error"></span>
         </div>
         <div class="clearfix"></div>

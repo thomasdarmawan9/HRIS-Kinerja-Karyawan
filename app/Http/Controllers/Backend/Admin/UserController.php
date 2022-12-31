@@ -224,8 +224,7 @@ class UserController extends Controller
 
                     if($request->input('department_name') != "" && $request->input('seksi') != ""){
                             
-                        DB::insert('INSERT INTO user_has_seksi (user_id, seksi_id, divisi_id) values (?, ?, ?)', [$request->input('id'), $request->input('seksi'), $request->input('department_name') ]);
-
+                        DB::statement("UPDATE user_has_seksi SET user_id = ". $request->input('id') .", seksi_id = ". $request->input('seksi') . ", divisi_id = ". $request->input('department_name') ." WHERE user_id = ". $request->input('id'));
                         DB::commit();
 
                         return response()->json(['type' => 'success', 'message' => "Successfully Created"]);

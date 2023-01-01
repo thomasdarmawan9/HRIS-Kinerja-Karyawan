@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 30, 2022 at 11:17 AM
+-- Generation Time: Jan 01, 2023 at 06:26 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.19
 
@@ -48,26 +48,8 @@ CREATE TABLE `admins` (
 
 INSERT INTO `admins` (`id`, `NIP`, `name`, `jabatan`, `tempat_kerja`, `email`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (7, 2022081023, 'Qonita', 'Manager HR', NULL, 'hr@alamanda.com', NULL, '$2y$10$uFpUGJIyKBA/.quNscU0JOnib6HBcsTlVBmIXalXqLXI7B1O5Azfy', 1, NULL, '2022-12-26 10:21:03', '2022-12-27 10:14:43'),
-(16, 2016081019, 'Lucas Modric', 'Product Manager', NULL, 'pm@alamanda.com', NULL, '$2y$10$lqeAz8n8yM9f4vYTYctzneQl9.79WopKYgTvtz8IR3elf2ZWV5e1W', 1, NULL, '2022-12-26 11:31:26', '2022-12-27 09:17:34'),
-(19, 2016081030, 'Marco', 'Staff Operational', NULL, 'staffops@alamanda.com', NULL, '$2y$10$eusdMrY5PDDVSVjKAjg6xuaFBPBS5BnOfkVj.SFdIn8lXu8sFJLp2', 1, NULL, '2022-12-27 03:51:50', '2022-12-27 03:51:50');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `blogs`
---
-
-CREATE TABLE `blogs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` longtext NOT NULL,
-  `category` int(11) DEFAULT NULL,
-  `uploaded_by` int(11) DEFAULT 1,
-  `file_path` varchar(255) DEFAULT 'assets/images/blog/default.png',
-  `status` tinyint(4) DEFAULT 1,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+(16, 2016081019, 'Lucas Modric', 'Product Manager', NULL, 'pm@alamanda.com', NULL, '$2y$10$HGXfxymq8ErGWzBgb83qRuyJKWyKpGTUK7GwfIJzPjJ/UScKtqGo2', 1, NULL, '2022-12-26 11:31:26', '2022-12-31 03:46:39'),
+(19, 2016081030, 'Marco', 'Staff Operational', NULL, 'staffops@alamanda.com', NULL, '$2y$10$0uCRbfbP/KTS7nmGLNNJN.FNWdSKP.F43MXXy9FShpNJEE7BMjU12', 1, NULL, '2022-12-27 03:51:50', '2023-01-01 03:48:33');
 
 -- --------------------------------------------------------
 
@@ -178,18 +160,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `model_has_permissions`
---
-
-CREATE TABLE `model_has_permissions` (
-  `permission_id` bigint(20) UNSIGNED NOT NULL,
-  `model_type` varchar(255) NOT NULL,
-  `model_id` bigint(20) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `model_has_roles`
 --
 
@@ -293,6 +263,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('6f815817403d2f707a3067cdf7b45cbbe21a56c0dbe9cbc04748f504ed723d2ce3afcdfa59138eff', 4, 1, 'adminApiToken', '[]', 0, '2022-12-22 09:17:24', '2022-12-22 09:17:24', '2023-12-22 16:17:24'),
 ('6fe00b5b046b6a5f3c6a05d098610ab8184bbf1ef812b43e03a353e889c8e34b952c237785e7708a', 2, 1, 'adminApiToken', '[]', 0, '2022-12-22 04:29:06', '2022-12-22 04:29:06', '2023-12-22 11:29:06'),
 ('81a93daad243e2406e5240170ec3f846ed4108fbb7a723b3fe28efac3bab37e1e8e35ad2b6d18879', 1, 1, 'adminApiToken', '[]', 0, '2022-12-21 15:27:39', '2022-12-21 15:27:39', '2023-12-21 22:27:39'),
+('82ae70e97339a223fa3691ffbf755107d18b36d0568a072dc55388d712561c31131d60cbade75036', 7, 1, 'adminApiToken', '[]', 0, '2023-01-01 03:01:44', '2023-01-01 03:01:44', '2024-01-01 10:01:44'),
 ('8b581795469d6b1f721a4816423a191b41441db65b0910117afac5f852c0a18053d6ab3268a1657d', 7, 1, 'adminApiToken', '[]', 0, '2022-12-29 16:26:26', '2022-12-29 16:26:26', '2023-12-29 23:26:26'),
 ('8eae19c5308b87c3c50f26e5e8b1edb846bfa3268385f07015164494b3a688799504a14eb4760385', 2, 1, 'adminApiToken', '[]', 0, '2022-12-21 09:31:51', '2022-12-21 09:31:51', '2023-12-21 16:31:51'),
 ('924bd41458f47af5176a55603c44c1b6f7a69140b201c8b9a67911801b369790876b070509dab0ac', 19, 1, 'adminApiToken', '[]', 0, '2022-12-29 15:58:35', '2022-12-29 15:58:35', '2023-12-29 22:58:35'),
@@ -302,6 +273,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('9fb6b290e2e07e618b16d4ad838a9cd6e8664ef85da1a7804da2105f08d67da74ff2bb57f51d6c63', 1, 1, 'adminApiToken', '[]', 0, '2022-12-21 09:10:22', '2022-12-21 09:10:22', '2023-12-21 16:10:22'),
 ('aaccba4eedf5021b49c065d696484b4e2921c79b616931c16ed75af6801375997ac8b11c85c12ea9', 4, 1, 'adminApiToken', '[]', 0, '2022-12-23 12:53:33', '2022-12-23 12:53:33', '2023-12-23 19:53:33'),
 ('abd016c6342e34c7afbf62f0135381f621b5e0820fc53718e8dc1c91415f0c9db6a8257cbb0f7692', 16, 1, 'adminApiToken', '[]', 0, '2022-12-30 06:52:30', '2022-12-30 06:52:30', '2023-12-30 13:52:30'),
+('b6ff83530ea8f87b5035746135ad28d795b414355418c2852ff4ec934b6391462884d357ef757449', 7, 1, 'adminApiToken', '[]', 0, '2022-12-31 03:30:55', '2022-12-31 03:30:55', '2023-12-31 10:30:55'),
 ('ba8aea0ac76d2b5b86e772a12aa4bde2410c23446b19858aa0c7ee7ca21d89d60c24251af2fafb85', 2, 1, 'adminApiToken', '[]', 0, '2022-12-25 08:30:25', '2022-12-25 08:30:25', '2023-12-25 15:30:25'),
 ('c32f3043c9ef2bd8031ec1965e02276e57d54762783093936eeb9e6a9a267e4b520801100faec237', 19, 1, 'adminApiToken', '[]', 0, '2022-12-29 16:18:28', '2022-12-29 16:18:28', '2023-12-29 23:18:28'),
 ('c54c15a6c48e844cf1cee6695d7d11c9ac079d7483bf96d3d4308d39a22d36efe87dda1f828e0da3', 6, 1, 'adminApiToken', '[]', 0, '2022-12-23 12:56:30', '2022-12-23 12:56:30', '2023-12-23 19:56:30'),
@@ -509,7 +481,9 @@ CREATE TABLE `seksi_has_divisi` (
 
 INSERT INTO `seksi_has_divisi` (`id`, `divisi_id`, `seksi_name`, `leader_seksi_name`, `created_at`, `updated_at`) VALUES
 (4, 5, 'Employee Improvement', 'Qonita', '2022-12-21 07:10:24', '2022-12-21 06:10:24'),
-(8, 10, 'Operational Product', 'Thomas Darmawan', '2022-12-26 12:32:30', '2022-12-26 11:32:30');
+(8, 10, 'Operational Product', 'Thomas Darmawan', '2022-12-26 12:32:30', '2022-12-26 11:32:30'),
+(9, 10, 'Production Implement', 'Lucas Modric', '2022-12-31 03:33:50', '2022-12-31 03:33:50'),
+(10, 10, 'Product Monitoring', 'Lucas Modric', '2022-12-31 03:35:18', '2022-12-31 03:35:18');
 
 -- --------------------------------------------------------
 
@@ -595,21 +569,6 @@ INSERT INTO `status_nilai_karyawan` (`id`, `user_id_ternilai`, `form_id`, `statu
 -- --------------------------------------------------------
 
 --
--- Table structure for table `team_user`
---
-
-CREATE TABLE `team_user` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `team_id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `role` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `user_has_seksi`
 --
 
@@ -626,9 +585,8 @@ CREATE TABLE `user_has_seksi` (
 
 INSERT INTO `user_has_seksi` (`id`, `user_id`, `seksi_id`, `divisi_id`) VALUES
 (15, 7, 6, 5),
-(16, 16, 8, 10),
-(17, 19, 8, 10),
-(19, 7, 4, 5);
+(16, 16, 10, 10),
+(17, 19, 8, 10);
 
 --
 -- Indexes for dumped tables
@@ -638,12 +596,6 @@ INSERT INTO `user_has_seksi` (`id`, `user_id`, `seksi_id`, `divisi_id`) VALUES
 -- Indexes for table `admins`
 --
 ALTER TABLE `admins`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `blogs`
---
-ALTER TABLE `blogs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -669,13 +621,6 @@ ALTER TABLE `kriteria_faktor_penilaian`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `model_has_permissions`
---
-ALTER TABLE `model_has_permissions`
-  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
-  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
 
 --
 -- Indexes for table `model_has_roles`
@@ -784,13 +729,6 @@ ALTER TABLE `status_nilai_karyawan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `team_user`
---
-ALTER TABLE `team_user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `team_user_team_id_user_id_unique` (`team_id`,`user_id`);
-
---
 -- Indexes for table `user_has_seksi`
 --
 ALTER TABLE `user_has_seksi`
@@ -805,12 +743,6 @@ ALTER TABLE `user_has_seksi`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `blogs`
---
-ALTER TABLE `blogs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `divisi`
@@ -876,7 +808,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `seksi_has_divisi`
 --
 ALTER TABLE `seksi_has_divisi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -891,26 +823,14 @@ ALTER TABLE `status_nilai_karyawan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `team_user`
---
-ALTER TABLE `team_user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `user_has_seksi`
 --
 ALTER TABLE `user_has_seksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `model_has_permissions`
---
-ALTER TABLE `model_has_permissions`
-  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `model_has_roles`

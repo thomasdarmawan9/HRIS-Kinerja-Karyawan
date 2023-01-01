@@ -31,9 +31,9 @@
             @endif
             </select>
             <input type="text" class="form-control" id="roleid" name="roleid" value="" placeholder=""
-                   required>
+                   hidden required>
                    <input type="text" class="form-control" id="rolejabatan" name="rolejabatan" value="" placeholder=""
-                   required>
+                  hidden required>
             <span id="error_name" class="has-error"></span>
         </div>
         <div class="form-group col-md-6 col-sm-12">

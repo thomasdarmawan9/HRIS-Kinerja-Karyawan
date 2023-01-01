@@ -328,7 +328,7 @@ class KinerjaController extends Controller
       
                $Status_record->save();
 
-               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $checkStatus , 'cks' => "update" ]);
+               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $Status_record , 'cks' => "update",'na' => $request->input('nilaiAkhir') ]);
             }else{
                $Status_record = new Status;
                $Status_record->user_id_ternilai = $request->input('user_id_ternilai');
@@ -344,7 +344,7 @@ class KinerjaController extends Controller
                
                $Status_record->save();
 
-               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $Status_record ,'cks' => "insert" ]);
+               return response()->json(['type' => 'success', 'message' => "Successfully Created", 'ck' => $Status_record ,'cks' => "insert" ,'na' => $request->input('nilaiAkhir')]);
             }
          
 

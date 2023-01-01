@@ -191,7 +191,7 @@
                 <hr>
                 <div class="row">
 
-                <input type="text" class="form-control" id="nilaiAkhir" name="nilaiAkhir" style="font-size:12px" hidden disabled>
+                <input type="text" class="form-control" id="nilaiAkhir" name="nilaiAkhir" style="font-size:12px"  hidden disabled>
                     <div class="col-12">
                         <h5>Status Dokumen :</h5>
                     </div>
@@ -534,6 +534,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
+
         $("#department option:first"). attr('disabled','true'); 
         $("#name option:first"). attr('disabled','true'); 
         
@@ -705,7 +706,9 @@
                                 $(".card-penilaian-kosong").show()
                             }
                         }else{
-                        
+                            $("#kemampuankerja").show();
+                            $("#disiplin").show();
+                            $("#btnattitude").show();
                                 $("#nav-profile-tab").addClass("disabled");
                             
                         }
@@ -731,20 +734,26 @@
                                 $(".card-penilaian").hide();
                                 $(".card-penilaian-kosong").show()
                             }
+                        }else{
+                            $("#kemampuankerja").show();
+                            $("#disiplin").show();
+                            $("#btnattitude").show();
                         }
-
-                        if("{!! $department[0]->name_division !!}" == $("#department option:selected").text()){
+                        
+                        if("{!! $department && $department[0]->name_division ? $department[0]->name_division: ''  !!}" == $("#department option:selected").text()){
+                            console.log("test atas");
                             $("#nav-home-tab").removeClass('disabled');
-                            $("#nav-home-tab").addClass('active');
                             $("#nav-attitude").removeClass('disabled');
-                            $("#nav-profile-tab").removeClass('active');
+                            $('#nav-profile-tab').trigger('click');
 
                         }else{
+                            console.log("test bawah");
                             $("#nav-home-tab").addClass('disabled');
-                            $("#nav-home-tab").removeClass('active');
                             $("#nav-attitude").addClass('disabled');
-                            $("#nav-profile-tab").addClass('active');
+                            // $("#nav-profile-tab").addClass('active');
+                            $('#nav-profile-tab').trigger('click');
                         }
+                        
                     }
 
                     if(result['SK'] == "open"){
@@ -983,6 +992,7 @@
                         success: function (result) {
                             // console.log("sukses post kemampuan kerja");
                             // console.log(result);
+                            $('#nilaiAkhir').val(result['na']);
                             swal({
                                 title: "Done!", 
                                 text: "Successfully submit", 
@@ -1083,6 +1093,7 @@
                             success: function (result) {
                                 // console.log("sukses post disiplin");
                                 // console.log(result);
+                                $('#nilaiAkhir').val(result['na']);
                                 swal({
                                     title: "Done!", 
                                     text: "Successfully submit", 
@@ -1182,7 +1193,8 @@
                             method: 'post',
                             type: 'json',
                             success: function (result) {
-                                // console.log("sukses post attitude");
+                                // console.log(result);
+                                $('#nilaiAkhir').val(result['na']);
                                 swal({
                                     title: "Done!", 
                                     text: "Successfully submit", 

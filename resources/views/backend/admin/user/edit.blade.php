@@ -19,7 +19,20 @@
         </div>
         <div class="form-group col-md-6 col-sm-12">
             <label for=""> Jabatan </label>
-            <input type="text" class="form-control" id="jabatan" name="jabatan" value="{{$user->jabatan}}" placeholder=""
+            @if(!empty($jabatan))
+            <select  id="jabatan" name="jabatan" class="form-control" >
+            @foreach($jabatan as $jbtn => $key)
+            <option data-id="{{$key->id }}" data-role="{{$key->name }}" class="form-control"  value="{{ $key->jabatan }}" {{ $key->jabatan == $user->jabatan ? 'selected' : '' }}>{{ $key->jabatan }}</option>
+            @endforeach
+            @else
+            @foreach($jabatan as $jbtn => $key)
+            <option data-id="{{$key->id }}" data-role="{{$key->name }}" class="form-control" value="{{ $key->jabatan }}">{{ $key->jabatan }}</option>
+            @endforeach
+            @endif
+            </select>
+            <input type="text" class="form-control" id="roleid" name="roleid" value="" placeholder=""
+                   required>
+                   <input type="text" class="form-control" id="rolejabatan" name="rolejabatan" value="" placeholder=""
                    required>
             <span id="error_name" class="has-error"></span>
         </div>
@@ -79,6 +92,19 @@
 </form>
 <script>
     $(document).ready(function () {
+        // Edit jabatan input change
+        var roleid = $("#jabatan").find(':selected').data('id');
+        var namejabatan = $("#jabatan").find(':selected').data('role');
+        $("#roleid").val(roleid);
+        $("#rolejabatan").val(namejabatan);
+
+        $('#jabatan').change(function () {
+            var roleid = $(this).find(':selected').data('id');
+            var namejabatan = $("#jabatan").find(':selected').data('role');
+            $("#roleid").val(roleid);
+            $("#rolejabatan").val(namejabatan);
+        });
+
         // GET SEKSI IF HAVE DIVISION EXIST
         var depid = $("select[name='department_name']").val();
         var dataSeksiID = $("#dataSeksiID").val();

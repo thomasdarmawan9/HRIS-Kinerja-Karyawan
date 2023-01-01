@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 use Auth;
-use App\Models\Role;
+use App\Models\Role as Role;
 use App\Models\Admin;
 use App\Models\Divisi as Department;
 use Illuminate\Http\Request;
@@ -175,9 +175,10 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $department_name = DB::table('divisi')->select('name_division','id')->get();
+            $jabatan = DB::table('roles')->select('name','jabatan','id')->get();
             $department_user = DB::table('user_has_seksi')->select('divisi_id','seksi_id')->where('user_id',$id)->first();
             $user = Admin::findOrFail($id);
-            $view = View::make('backend.admin.user.edit', compact('user','department_name','department_user'))->render();
+            $view = View::make('backend.admin.user.edit', compact('user','department_name','department_user','jabatan'))->render();
             return response()->json(['html' => $view,'department_name'=>$department_name]);
         } else {
             return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);
@@ -222,8 +223,12 @@ class UserController extends Controller
                     $admin->password = Hash::make($request->password);
                     $admin->save();
 
+                    $rolejabatan = $request->input('rolejabatan');
+                    // $roleuser = Role::where('model_id',$request->input('id'))->first();
+                    DB::statement("UPDATE model_has_roles SET role_id = ". $request->input('roleid').", model_type = '".$rolejabatan."' WHERE model_id = ".$request->input('id'));
+
                     if($request->input('department_name') != "" && $request->input('seksi') != ""){
-                            
+                        
                         DB::statement("UPDATE user_has_seksi SET user_id = ". $request->input('id') .", seksi_id = ". $request->input('seksi') . ", divisi_id = ". $request->input('department_name') ." WHERE user_id = ". $request->input('id'));
                         DB::commit();
 

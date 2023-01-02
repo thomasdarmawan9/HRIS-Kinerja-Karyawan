@@ -70,19 +70,24 @@ class KinerjaController extends Controller
          }
          // dd($dataUser);
       }else if(Auth::user()->role->model_type == "Atasan Langsung"){
-         $divisi = $department[0]->name_division;
-         // dd($divisi);
-         $dataUsers = DB::select("SELECT admins.id, admins.NIP,admins.jabatan, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
-         FROM `user_has_seksi` LEFT JOIN `admins` ON admins.id = user_has_seksi.user_id 
-         JOIN `seksi_has_divisi` ON seksi_has_divisi.id = user_has_seksi.seksi_id 
-         JOIN `divisi` ON divisi.id = seksi_has_divisi.divisi_id 
-         WHERE divisi.name_division = '$divisi'");
-
-         foreach($dataUsers as $listUser){
-            $listUserfix['id'] = $listUser->id;
-            $listUserfix['name'] = $listUser->name;
-            $dataUser[] = $listUserfix;
+         $divisi = $department && $department[0]->name_division ? $department[0]->name_division: '';
+         if($divisi === ""){
+            return view('backend.admin.kinerja.index_error');
+         }else{
+            $dataUsers = DB::select("SELECT admins.id, admins.NIP,admins.jabatan, admins.name, seksi_has_divisi.seksi_name, divisi.name_division, divisi.leader_team_name as leader_name
+            FROM `user_has_seksi` LEFT JOIN `admins` ON admins.id = user_has_seksi.user_id 
+            JOIN `seksi_has_divisi` ON seksi_has_divisi.id = user_has_seksi.seksi_id 
+            JOIN `divisi` ON divisi.id = seksi_has_divisi.divisi_id 
+            WHERE divisi.name_division = '$divisi'");
+   
+            foreach($dataUsers as $listUser){
+               $listUserfix['id'] = $listUser->id;
+               $listUserfix['name'] = $listUser->name;
+               $dataUser[] = $listUserfix;
+            }
          }
+         // dd($divisi);
+        
 
          // dd($dataUser);
 

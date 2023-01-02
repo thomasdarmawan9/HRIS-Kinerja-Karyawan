@@ -150,7 +150,7 @@ class RoleController extends Controller
         if ($request->ajax()) {
             // Setup the validator
             $rules = [
-                'name' => 'required|unique:roles,name,' . $role->id,
+                'name' => 'required',
                 'jabatan' => 'required'
             ];
 

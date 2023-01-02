@@ -71,6 +71,7 @@
                                     $('#myModal').modal('hide'); // hide bootstrap modal
 
                                 } else if (data.type === 'error') {
+                                    console.log(data);
                                     if (data.errors) {
                                         $.each(data.errors, function (key, val) {
                                             $('#error_' + key).html(val);

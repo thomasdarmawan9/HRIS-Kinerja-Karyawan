@@ -7,11 +7,11 @@
                 <div class="page-title-icon">
                     <i class="pe-7s-users icon-gradient bg-mean-fruit"> </i>
                 </div>
-                <div>All Users</div>
+                <div>All Data Karyawan</div>
                 <div class="d-inline-block ml-2">
                         <button class="btn btn-success" onclick="create()"><i
                                     class="glyphicon glyphicon-plus"></i>
-                            New User
+                            Buat akun karyawan
                         </button>
                 </div>
             </div>

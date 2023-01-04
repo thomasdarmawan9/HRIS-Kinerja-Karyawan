@@ -204,6 +204,7 @@
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
+                            console.log(xhr);
                             swal("Error deleting!", "Try again", "error");
                         }
                     });

@@ -60,14 +60,20 @@ class KinerjaController extends Controller
          JOIN `seksi_has_divisi` ON seksi_has_divisi.id = user_has_seksi.seksi_id 
          JOIN `divisi` ON divisi.id = seksi_has_divisi.divisi_id
          WHERE admins.id != ". $usersid);
+
+         if(count($dataUsers) == 0){
+            $dataUser = $dataUsers;
+         }else{
+            foreach($dataUsers as $listUser){
+               $listUserfix['id'] = $listUser->id;
+               $listUserfix['name'] = $listUser->name;
+               $dataUser[] = $listUserfix;
+            }
+         }
          // $dataUser['id']  = $dataUser[0]->id;
          // $dataUser['name']  = $dataUser[0]->name;
          // $listUser = $dataUser;
-         foreach($dataUsers as $listUser){
-            $listUserfix['id'] = $listUser->id;
-            $listUserfix['name'] = $listUser->name;
-            $dataUser[] = $listUserfix;
-         }
+        
          // dd($dataUser);
       }else if(Auth::user()->role->model_type == "Atasan Langsung"){
          $divisi = $department && $department[0]->name_division ? $department[0]->name_division: '';
@@ -122,7 +128,7 @@ class KinerjaController extends Controller
              ->addColumn('action', function ($penilaian) {
                  $html = '<div class="btn-group">';
                  $html .= '<a data-toggle="tooltip" id="' .$penilaian->id . '" class="btn btn-xs btn-primary mr-1 edit text-white" title="Edit"><i class="fa fa-edit"></i> </a>';
-                 $html .= '<a data-toggle="tooltip" id="' . $penilaian->id . '" class="btn btn-xs btn-danger mr-1 delete text-white" title="Delete"><i class="fa fa-trash"></i> </a>';
+               //   $html .= '<a data-toggle="tooltip" id="' . $penilaian->id . '" class="btn btn-xs btn-danger mr-1 delete text-white" title="Delete"><i class="fa fa-trash"></i> </a>';
                  $html .= '</div>';
                  return $html;
                  return "<a class='btn btn-danger text-white'>Disabled</a>";

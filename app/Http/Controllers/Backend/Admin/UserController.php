@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin;
 use Auth;
 use App\Models\Role as Role;
-use App\Models\Admin;
+use App\Models\Admin as Admin;
 use App\Models\Divisi as Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -266,14 +266,12 @@ class UserController extends Controller
     public function destroy($id, Request $request)
     {
         if ($request->ajax()) {
-            $haspermision = Auth::guard('admin');
-            if ($haspermision) {
-                $user = Admin::findOrFail($id); //Get user with specified id
-                $user->delete();
-                return response()->json(['type' => 'success', 'message' => "Successfully Deleted"]);
-            } else {
-                abort(403, 'Sorry, you are not authorized to access the page');
-            }
+            // $user = Admin::findOrFail($id); //Get user with specified id
+            // $user->delete();
+            DB::table('admins')->where('id', $id)->delete();
+            DB::table('user_has_seksi')->where('user_id', $id)->delete();
+            DB::table('model_has_roles')->where('model_id', $id)->delete();
+            return response()->json(['type' => 'success', 'message' => "Successfully Deleted"]);
         } else {
             return response()->json(['status' => 'false', 'message' => "Access only ajax request"]);
         }

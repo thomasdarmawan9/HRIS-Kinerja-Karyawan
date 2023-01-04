@@ -16,7 +16,7 @@ Route::patch('/change_password', 'AdminController@update_password')->name('chang
 Route::resource('kinerja', 'KinerjaController');
 Route::get('/allPenilaian', 'KinerjaController@getAll')->name('allPenilaian');
 Route::post('/storeNilai', 'KinerjaController@storeNilai')->name('storeNilai');
-Route::delete('/deleteFaktor/{id}', 'KinerjaController@deleteFaktor');
+// Route::delete('/deleteFaktor/{id}', 'KinerjaController@deleteFaktor');
 
 /* ===== kinerja End =========== */
 
@@ -31,8 +31,8 @@ Route::resource('users', 'UserController');
 Route::get('/allUser', 'UserController@getAll')->name('allUser.users');
 Route::get('/export', 'UserController@export')->name('export');
 
-Route::resource('permissions', 'PermissionController');
-Route::get('/allPermissions', 'PermissionController@getAll')->name('allPermissions');
+// Route::resource('permissions', 'PermissionController');
+// Route::get('/allPermissions', 'PermissionController@getAll')->name('allPermissions');
 
 Route::resource('roles', 'RoleController');
 Route::get('/allRoles', 'RoleController@getAll')->name('allRoles');
@@ -50,8 +50,8 @@ Route::delete('/deleteSeksi/{id}', 'DepartmentSeksiController@deleteSeksi');
 /* ===== Settings Start =========== */
 
 // Settings Controller
-Route::resource('settings', 'SettingsController');
-Route::get('/allSettings', 'SettingsController@getAll')->name('allSettings');
+// Route::resource('settings', 'SettingsController');
+// Route::get('/allSettings', 'SettingsController@getAll')->name('allSettings');
 
 /* ===== Settings End =========== */
 

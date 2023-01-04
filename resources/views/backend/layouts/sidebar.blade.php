@@ -88,7 +88,7 @@
                         <li>
                             <a href="{{ URL :: to('/admin/users') }}">
                                 <i class="metismenu-icon pe-7s-users"></i>
-                                Users
+                                Karyawan
                             </a>
                         </li>
                         <li>

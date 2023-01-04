@@ -196,11 +196,11 @@
                         <h5>Status Dokumen :</h5>
                     </div>
                     <div class="col-12" id="infostatus" style="display:none">
-                        <button type="button" class="btn SK">Kemampuan Kerja</button>
+                        <button type="button" class="btn btnsts SK">Kemampuan Kerja</button>
                         
-                        <button type="button" class="btn SD">Disiplin</button>
+                        <button type="button" class="btn btnsts SD">Disiplin</button>
 
-                        <button type="button" class="btn SA">Attitude</button>
+                        <button type="button" class="btn btnsts SA">Attitude</button>
                     </div>
                 </div>
             </div>
@@ -215,9 +215,9 @@
             <div class="card-body">
                 <div class="d-inline-block mb-4">
 
-                    <button class="btn btn-primary fnk" style="display:none" onclick="createFaktor()"><i class="glyphicon glyphicon-plus"></i>
+                    <!-- <button class="btn btn-primary fnk" style="display:none" onclick="createFaktor()"><i class="glyphicon glyphicon-plus"></i>
                         Tambah Faktor & Kriteria
-                    </button>
+                    </button> -->
 
                 </div>
                 <div class="table-responsive">
@@ -741,13 +741,13 @@
                         }
                         
                         if("{!! $department && $department[0]->name_division ? $department[0]->name_division: ''  !!}" == $("#department option:selected").text()){
-                            console.log("test atas");
+                            // console.log("test atas");
                             $("#nav-home-tab").removeClass('disabled');
                             $("#nav-attitude").removeClass('disabled');
                             $('#nav-profile-tab').trigger('click');
 
                         }else{
-                            console.log("test bawah");
+                            // console.log("test bawah");
                             $("#nav-home-tab").addClass('disabled');
                             $("#nav-attitude").addClass('disabled');
                             // $("#nav-profile-tab").addClass('active');
@@ -848,7 +848,9 @@
 
                     pkk_number = ('000' + result['pkk_number']).substr(-3)
                     $('#pkkNumber').val("pkk"+pkk_number);
+                   
                     swal("Done!", "Successfully Check Status", "success");
+                    
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr);
@@ -856,6 +858,12 @@
                 }
             });
             
+        });
+
+        $(".btnsts").click(function() {
+                        $('html, body').animate({
+                            scrollTop: $("#forminputkinerja").offset().top
+                        }, 2000);
         });
 
         // YEAR & PERIODE SETTING 
